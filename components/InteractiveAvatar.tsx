@@ -188,10 +188,15 @@ export default function InteractiveAvatar() {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <Card>
-        <CardBody className="h-[500px] flex flex-col justify-center items-center">
-          {stream ? (
-            <div className="h-[500px] w-[900px] justify-center items-center flex rounded-lg overflow-hidden">
+      <div className="flex justify-center w-full py-8">
+        <div className="relative w-[390px] h-[844px] bg-white rounded-[60px] shadow-xl border-[14px] border-black overflow-hidden">
+          {/* iPhone Notch */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[32px] w-[168px] bg-black rounded-b-[24px] z-10"></div>
+          
+          <Card className="w-full h-full rounded-none">
+            <CardBody className="p-0 flex flex-col">
+              {stream ? (
+                <div className="w-full h-[400px] justify-center items-center flex overflow-hidden">
               <video
                 ref={mediaStream}
                 autoPlay
@@ -199,12 +204,12 @@ export default function InteractiveAvatar() {
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "contain",
+                  objectFit: "cover",
                 }}
               >
                 <track kind="captions" />
               </video>
-              <div className="flex flex-col gap-2 absolute bottom-3 right-3">
+              <div className="flex flex-col gap-2 absolute bottom-3 right-3 z-10">
                 <Button
                   className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
                   size="md"
@@ -224,8 +229,8 @@ export default function InteractiveAvatar() {
               </div>
             </div>
           ) : !isLoadingSession ? (
-            <div className="h-full justify-center items-center flex flex-col gap-8 w-[500px] self-center">
-              <div className="flex flex-col gap-2 w-full">
+            <div className="h-full justify-center items-center flex flex-col gap-4 p-4">
+              <div className="flex flex-col gap-2 w-full max-w-[300px]">
                 <Select
                   className="max-w-xs"
                   label="Select language"
@@ -254,7 +259,7 @@ export default function InteractiveAvatar() {
           )}
         </CardBody>
         <Divider />
-        <CardFooter className="flex flex-col gap-3 relative">
+        <CardFooter className="flex flex-col gap-3 relative border-t">
           <Tabs
             aria-label="Options"
             selectedKey={chatMode}

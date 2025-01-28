@@ -9,8 +9,8 @@ export default function App() {
     <div className="flex min-h-screen flex-col">
       <Header />
       <Hero />
-      <section id="interactive" className="container mx-auto px-4 py-8 bg-[hsl(221.54,100%,97.45%)]">
-        <div className="mx-auto max-w-[1000px]">
+      <section id="interactive" className="w-full py-16 bg-[hsl(221.54,100%,97.45%)]">
+        <div className="container mx-auto px-4">
           <InteractiveAvatar />
         </div>
       </section>
