@@ -259,54 +259,53 @@ export default function InteractiveAvatar() {
             )}
           </CardBody>
           <Divider />
-        <CardFooter className="flex flex-col gap-3 relative border-t">
-          <Tabs
-            aria-label="Options"
-            selectedKey={chatMode}
-            onSelectionChange={(v) => {
-              handleChangeChatMode(v);
-            }}
-          >
-            <Tab key="text_mode" title="Text mode" />
-            <Tab key="voice_mode" title="Voice mode" />
-          </Tabs>
-          {chatMode === "text_mode" ? (
-            <div className="w-full flex relative">
-              <InteractiveAvatarTextInput
-                disabled={!stream}
-                input={text}
-                label="Chat"
-                loading={isLoadingRepeat}
-                placeholder="Type something for the avatar to respond"
-                setInput={setText}
-                onSubmit={handleSpeak}
-              />
-              {text && (
-                <Chip className="absolute right-16 top-3">Listening</Chip>
-              )}
-            </div>
-          ) : (
-            <div className="w-full text-center">
-              <Button
-                className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
-                isDisabled={!isUserTalking}
-                size="md"
-                variant="shadow"
+            <CardFooter className="flex flex-col gap-3 relative border-t">
+              <Tabs
+                aria-label="Options"
+                selectedKey={chatMode}
+                onSelectionChange={(v) => {
+                  handleChangeChatMode(v);
+                }}
               >
-                {isUserTalking ? "Listening" : "Voice chat"}
-              </Button>
-            </div>
-          )}
-        </CardFooter>
-      </Card>
-            </Card>
-            <p className="font-mono text-right">
-              <span className="font-bold">Console:</span>
-              <br />
-              {debug}
-            </p>
-          </div>
+                <Tab key="text_mode" title="Text mode" />
+                <Tab key="voice_mode" title="Voice mode" />
+              </Tabs>
+              {chatMode === "text_mode" ? (
+                <div className="w-full flex relative">
+                  <InteractiveAvatarTextInput
+                    disabled={!stream}
+                    input={text}
+                    label="Chat"
+                    loading={isLoadingRepeat}
+                    placeholder="Type something for the avatar to respond"
+                    setInput={setText}
+                    onSubmit={handleSpeak}
+                  />
+                  {text && (
+                    <Chip className="absolute right-16 top-3">Listening</Chip>
+                  )}
+                </div>
+              ) : (
+                <div className="w-full text-center">
+                  <Button
+                    className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
+                    isDisabled={!isUserTalking}
+                    size="md"
+                    variant="shadow"
+                  >
+                    {isUserTalking ? "Listening" : "Voice chat"}
+                  </Button>
+                </div>
+              )}
+            </CardFooter>
+          </Card>
+          <p className="font-mono text-right">
+            <span className="font-bold">Console:</span>
+            <br />
+            {debug}
+          </p>
         </div>
       </div>
+    </div>
     );
 }
