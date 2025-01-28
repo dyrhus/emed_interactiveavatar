@@ -199,7 +199,7 @@ export default function InteractiveAvatar() {
                   >
                     <track kind="captions" />
                   </video>
-                  <div className="absolute bottom-6 right-6 z-10">
+                  <div className="absolute top-8 right-6 z-10">
                     <Button
                       className="bg-black text-white rounded-lg hover:bg-gray-900"
                       size="sm"
