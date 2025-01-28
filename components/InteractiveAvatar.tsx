@@ -228,6 +228,7 @@ export default function InteractiveAvatar() {
                     </Button>
                   </div>
                 </div>
+              ) : !isLoadingSession ? (
           ) : !isLoadingSession ? (
             <div className="h-full justify-center items-center flex flex-col gap-4 p-4">
               <div className="flex flex-col gap-2 w-full max-w-[300px]">
