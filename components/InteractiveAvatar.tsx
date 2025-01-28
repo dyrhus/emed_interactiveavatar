@@ -51,7 +51,6 @@ export default function InteractiveAvatar() {
       });
       const token = await response.text();
 
-
       return token;
     } catch (error) {
       setDebug(`Error fetching access token: ${error}`);
