@@ -268,7 +268,7 @@ export default function InteractiveAvatar() {
                   )}
                 </div>
               ) : (
-                <div className="w-full flex justify-center items-center gap-2">
+                <div className="w-full flex justify-center items-center">
                   <Button
                     className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
                     isDisabled={!isUserTalking}
@@ -276,14 +276,6 @@ export default function InteractiveAvatar() {
                     variant="shadow"
                   >
                     {isUserTalking ? "Listening" : "Voice chat"}
-                  </Button>
-                  <Button
-                    className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
-                    size="md"
-                    variant="shadow"
-                    onClick={endSession}
-                  >
-                    End session
                   </Button>
                 </div>
               )}
