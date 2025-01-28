@@ -66,10 +66,10 @@ export default function InteractiveAvatar() {
     avatar.current = new StreamingAvatar({
       token: newToken,
     });
-    avatar.current.on(StreamingEvents.AVATAR_START_TALKING, (_e) => {
+    avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
       setDebug("Avatar started talking");
     });
-    avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, (_e) => {
+    avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
       setDebug("Avatar stopped talking");
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
@@ -80,11 +80,11 @@ export default function InteractiveAvatar() {
       setDebug("Stream ready");
       setStream(event.detail);
     });
-    avatar.current?.on(StreamingEvents.USER_START, (_event) => {
+    avatar.current?.on(StreamingEvents.USER_START, () => {
       setDebug("User started talking");
       setIsUserTalking(true);
     });
-    avatar.current?.on(StreamingEvents.USER_STOP, (_event) => {
+    avatar.current?.on(StreamingEvents.USER_STOP, () => {
       setDebug("User stopped talking");
       setIsUserTalking(false);
     });
