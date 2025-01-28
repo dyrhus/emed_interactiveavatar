@@ -13,7 +13,6 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Input,
   Select,
   SelectItem,
   Spinner,
@@ -26,7 +25,7 @@ import { useMemoizedFn, usePrevious } from "ahooks";
 
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
-import { AVATARS, STT_LANGUAGE_LIST } from "@/app/lib/constants";
+import { STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
 export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
