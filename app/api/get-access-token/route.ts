@@ -23,7 +23,8 @@ export async function POST() {
   } catch (error) {
     // In production, this should use proper error logging service
     // Log error details in production environment
-    const _errorMessage = error instanceof Error ? error.message : String(error);
+    const _errorMessage =
+      error instanceof Error ? error.message : String(error);
 
     return new Response("Failed to retrieve access token", {
       status: 500,
