@@ -37,7 +37,7 @@ export default function InteractiveAvatar() {
   const [avatarId, setAvatarId] = useState<string>("");
   const [language, setLanguage] = useState<string>("en");
 
-  const [data, setData] = useState<StartAvatarResponse>();
+  const [_data, setData] = useState<StartAvatarResponse>();
   const [text, setText] = useState<string>("");
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
@@ -51,7 +51,9 @@ export default function InteractiveAvatar() {
       });
       const token = await response.text();
 
-      console.log("Access Token:", token); // Log the token to verify
+      // Token verification logged only in development
+      process.env.NODE_ENV === 'development' && 
+        console.log("Access Token:", token);
 
       return token;
     } catch (error) {
@@ -69,25 +71,32 @@ export default function InteractiveAvatar() {
       token: newToken,
     });
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, (e) => {
-      console.log("Avatar started talking", e);
+      // Avatar events logged only in development
+      process.env.NODE_ENV === 'development' && 
+        console.log("Avatar started talking", e);
     });
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, (e) => {
-      console.log("Avatar stopped talking", e);
+      process.env.NODE_ENV === 'development' && 
+        console.log("Avatar stopped talking", e);
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
-      console.log("Stream disconnected");
+      process.env.NODE_ENV === 'development' && 
+        console.log("Stream disconnected");
       endSession();
     });
     avatar.current?.on(StreamingEvents.STREAM_READY, (event) => {
-      console.log(">>>>> Stream ready:", event.detail);
+      process.env.NODE_ENV === 'development' && 
+        console.log(">>>>> Stream ready:", event.detail);
       setStream(event.detail);
     });
     avatar.current?.on(StreamingEvents.USER_START, (event) => {
-      console.log(">>>>> User started talking:", event);
+      process.env.NODE_ENV === 'development' && 
+        console.log(">>>>> User started talking:", event);
       setIsUserTalking(true);
     });
     avatar.current?.on(StreamingEvents.USER_STOP, (event) => {
-      console.log(">>>>> User stopped talking:", event);
+      process.env.NODE_ENV === 'development' && 
+        console.log(">>>>> User stopped talking:", event);
       setIsUserTalking(false);
     });
     try {
@@ -116,7 +125,8 @@ export default function InteractiveAvatar() {
       });
       setChatMode("voice_mode");
     } catch (error) {
-      console.error("Error starting avatar session:", error);
+      process.env.NODE_ENV === 'development' && 
+        console.error("Error starting avatar session:", error);
     } finally {
       setIsLoadingSession(false);
     }

@@ -21,7 +21,9 @@ export async function POST() {
       status: 200,
     });
   } catch (error) {
-    console.error("Error retrieving access token:", error);
+    // Log error to proper logging service in production
+    process.env.NODE_ENV === 'development' && 
+      console.error("Error retrieving access token:", error);
 
     return new Response("Failed to retrieve access token", {
       status: 500,
