@@ -22,7 +22,7 @@ export async function POST() {
     });
   } catch (error) {
     // Log error to proper logging service in production
-    process.env.NODE_ENV === 'development' && 
+    process.env.NODE_ENV === "development" &&
       console.error("Error retrieving access token:", error);
 
     return new Response("Failed to retrieve access token", {
