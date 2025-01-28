@@ -21,9 +21,8 @@ export async function POST() {
       status: 200,
     });
   } catch (error) {
-    // Log error to proper logging service in production
-    process.env.NODE_ENV === "development" &&
-      console.error("Error retrieving access token:", error);
+    // In production, this should use proper error logging service
+    const errorMessage = error instanceof Error ? error.message : String(error);
 
     return new Response("Failed to retrieve access token", {
       status: 500,
