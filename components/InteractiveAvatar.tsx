@@ -32,8 +32,8 @@ export default function InteractiveAvatar() {
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>();
-  const [knowledgeId, setKnowledgeId] = useState<string>("046b4e319f334715a246e6b9977e42ca");
-  const [avatarId, setAvatarId] = useState<string>("Elenora_FitnessCoach_public");
+  const knowledgeId = "046b4e319f334715a246e6b9977e42ca";
+  const avatarId = "Elenora_FitnessCoach_public";
   const [language, setLanguage] = useState<string>("en");
 
   const [, setData] = useState<StartAvatarResponse>();
