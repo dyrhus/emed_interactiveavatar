@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
-import { Geist } from "next/font/google";
-import "./globals.css";
+import { Inter } from "next/font/google";
+import "@/styles/globals.css";
 
-const geist = Geist({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>
