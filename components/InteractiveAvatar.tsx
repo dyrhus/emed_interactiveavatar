@@ -230,35 +230,35 @@ export default function InteractiveAvatar() {
                 </div>
               ) : !isLoadingSession ? (
                 <div className="h-full justify-center items-center flex flex-col gap-4 p-4">
-              <div className="flex flex-col gap-2 w-full max-w-[300px]">
-                <Select
-                  className="max-w-xs"
-                  label="Select language"
-                  placeholder="Select language"
-                  selectedKeys={[language]}
-                  onChange={(e) => {
-                    setLanguage(e.target.value);
-                  }}
+                <div className="flex flex-col gap-2 w-full max-w-[300px]">
+                  <Select
+                    className="max-w-xs"
+                    label="Select language"
+                    placeholder="Select language"
+                    selectedKeys={[language]}
+                    onChange={(e) => {
+                      setLanguage(e.target.value);
+                    }}
+                  >
+                    {STT_LANGUAGE_LIST.map((lang) => (
+                      <SelectItem key={lang.key}>{lang.label}</SelectItem>
+                    ))}
+                  </Select>
+                </div>
+                <Button
+                  className="bg-gradient-to-tr from-indigo-500 to-indigo-300 w-full text-white"
+                  size="md"
+                  variant="shadow"
+                  onClick={startSession}
                 >
-                  {STT_LANGUAGE_LIST.map((lang) => (
-                    <SelectItem key={lang.key}>{lang.label}</SelectItem>
-                  ))}
-                </Select>
+                  Start session
+                </Button>
               </div>
-              <Button
-                className="bg-gradient-to-tr from-indigo-500 to-indigo-300 w-full text-white"
-                size="md"
-                variant="shadow"
-                onClick={startSession}
-              >
-                Start session
-              </Button>
-            </div>
-          ) : (
-            <Spinner color="default" size="lg" />
-          )}
-        </CardBody>
-        <Divider />
+            ) : (
+              <Spinner color="default" size="lg" />
+            )}
+          </CardBody>
+          <Divider />
         <CardFooter className="flex flex-col gap-3 relative border-t">
           <Tabs
             aria-label="Options"
