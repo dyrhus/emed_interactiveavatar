@@ -196,7 +196,7 @@ export default function InteractiveAvatar() {
           <Card className="w-full h-full rounded-none">
             <CardBody className="p-0 flex flex-col">
               {stream ? (
-                <div className="w-full h-[250px] justify-center items-center flex overflow-hidden">
+                <div className="w-full h-[480px] justify-center items-center flex overflow-hidden">
                   <video
                     ref={mediaStream}
                     autoPlay
@@ -209,7 +209,7 @@ export default function InteractiveAvatar() {
                   >
                     <track kind="captions" />
                   </video>
-                  <div className="absolute bottom-3 right-3 z-10">
+                  <div className="absolute bottom-6 right-6 z-10">
                     <Button
                       className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
                       size="sm"
