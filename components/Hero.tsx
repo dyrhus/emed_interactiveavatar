@@ -83,7 +83,12 @@ export default function Hero() {
                 <span className="text-gray-600">Expert Guidance</span>
               </div>
             </div>
-            <button className="inline-flex h-10 items-center justify-center rounded-md bg-[#14161F] px-8 text-sm font-medium text-white transition-colors hover:bg-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50">
+            <button
+              onClick={() => {
+                document.getElementById('interactive')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex h-10 items-center justify-center rounded-md bg-[#14161F] px-8 text-sm font-medium text-white transition-colors hover:bg-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50"
+            >
               Start Interactive Demo
             </button>
           </div>
