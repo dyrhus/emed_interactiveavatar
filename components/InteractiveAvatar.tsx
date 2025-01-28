@@ -201,7 +201,7 @@ export default function InteractiveAvatar() {
                   </video>
                   <div className="absolute bottom-6 right-6 z-10">
                     <Button
-                      className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
+                      className="bg-black text-white rounded-lg hover:bg-gray-900"
                       size="sm"
                       variant="shadow"
                       onClick={endSession}
@@ -228,7 +228,7 @@ export default function InteractiveAvatar() {
                   </Select>
                 </div>
                 <Button
-                  className="bg-gradient-to-tr from-indigo-500 to-indigo-300 w-full text-white"
+                  className="bg-black w-full text-white hover:bg-gray-900"
                   size="md"
                   variant="shadow"
                   onClick={startSession}
@@ -270,7 +270,7 @@ export default function InteractiveAvatar() {
               ) : (
                 <div className="w-full flex justify-center items-center">
                   <Button
-                    className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
+                    className="bg-black text-white hover:bg-gray-900"
                     isDisabled={!isUserTalking}
                     size="md"
                     variant="shadow"
