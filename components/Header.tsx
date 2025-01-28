@@ -16,8 +16,10 @@ export default function Header() {
         </Link>
         <div className="flex items-center space-x-4">
           <Link
-            href="#"
+            href="https://www.emed.com/employer"
             className="rounded-full bg-[#14161F] px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-900"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Let&apos;s Connect
           </Link>
