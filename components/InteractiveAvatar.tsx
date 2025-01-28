@@ -189,14 +189,14 @@ export default function InteractiveAvatar() {
   return (
     <div className="w-full flex flex-col gap-4">
       <div className="flex justify-center w-full py-8">
-        <div className="relative w-[320px] h-[690px] bg-white rounded-[40px] shadow-xl border-[12px] border-black overflow-hidden">
+        <div className="relative w-[280px] h-[580px] bg-white rounded-[35px] shadow-xl border-[10px] border-black overflow-hidden">
           {/* iPhone Notch */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[25px] w-[120px] bg-black rounded-b-[18px] z-10"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[20px] w-[100px] bg-black rounded-b-[15px] z-10"></div>
           
           <Card className="w-full h-full rounded-none">
             <CardBody className="p-0 flex flex-col">
               {stream ? (
-                <div className="w-full h-[300px] justify-center items-center flex overflow-hidden">
+                <div className="w-full h-[250px] justify-center items-center flex overflow-hidden">
                   <video
                     ref={mediaStream}
                     autoPlay
@@ -230,7 +230,7 @@ export default function InteractiveAvatar() {
                 </div>
               ) : !isLoadingSession ? (
                 <div className="h-full justify-center items-center flex flex-col gap-4 p-4">
-                <div className="flex flex-col gap-2 w-full max-w-[300px]">
+                <div className="flex flex-col gap-2 w-full max-w-[260px]">
                   <Select
                     className="max-w-xs"
                     label="Select language"
