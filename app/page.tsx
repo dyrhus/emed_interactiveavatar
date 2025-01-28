@@ -1,14 +1,19 @@
 "use client";
 
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
 import InteractiveAvatar from "@/components/InteractiveAvatar";
+
 export default function App() {
   return (
-    <div className="w-screen h-screen flex flex-col">
-      <div className="w-[900px] flex flex-col items-start justify-start gap-5 mx-auto pt-4 pb-20">
-        <div className="w-full">
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <Hero />
+      <section className="container mx-auto px-4 py-8">
+        <div className="mx-auto max-w-[1000px]">
           <InteractiveAvatar />
         </div>
-      </div>
+      </section>
     </div>
   );
 }
