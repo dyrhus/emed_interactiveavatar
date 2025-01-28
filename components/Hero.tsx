@@ -1,9 +1,9 @@
 export default function Hero() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32">
+    <section className="w-full py-8 md:py-16 lg:py-20">
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center space-y-4 text-center">
-          <div className="space-y-2">
+        <div className="flex flex-col items-center space-y-8 text-center">
+          <div className="space-y-4">
             <h1 className="text-4xl font-bold tracking-tighter text-[#14161F] sm:text-5xl md:text-6xl lg:text-7xl">
               Experience the Future of Weight Management
             </h1>
@@ -12,8 +12,8 @@ export default function Hero() {
               combines cutting-edge technology with personalized healthcare support.
             </p>
           </div>
-          <div className="space-y-8">
-            <div className="flex flex-wrap justify-center gap-8">
+          <div className="space-y-12">
+            <div className="flex flex-wrap justify-center gap-10">
               <div className="flex items-center space-x-2">
                 <svg
                   className=" h-5 w-5 text-green-500"
