@@ -209,17 +209,9 @@ export default function InteractiveAvatar() {
                   >
                     <track kind="captions" />
                   </video>
-                  <div className="flex flex-col gap-2 absolute bottom-3 right-3 z-10">
+                  <div className="absolute bottom-3 right-3 z-10">
                     <Button
                       className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
-                      size="sm"
-                      variant="shadow"
-                      onClick={handleInterrupt}
-                    >
-                      Interrupt task
-                    </Button>
-                    <Button
-                      className="bg-gradient-to-tr from-indigo-500 to-indigo-300  text-white rounded-lg"
                       size="sm"
                       variant="shadow"
                       onClick={endSession}
@@ -286,7 +278,7 @@ export default function InteractiveAvatar() {
                   )}
                 </div>
               ) : (
-                <div className="w-full text-center">
+                <div className="w-full flex justify-center items-center gap-2">
                   <Button
                     className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
                     isDisabled={!isUserTalking}
@@ -294,6 +286,14 @@ export default function InteractiveAvatar() {
                     variant="shadow"
                   >
                     {isUserTalking ? "Listening" : "Voice chat"}
+                  </Button>
+                  <Button
+                    className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
+                    size="md"
+                    variant="shadow"
+                    onClick={endSession}
+                  >
+                    End session
                   </Button>
                 </div>
               )}
