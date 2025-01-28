@@ -12,7 +12,7 @@ export default function Header() {
             href="#"
             className="rounded-full bg-[#14161F] px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-900"
           >
-            Let's Connect
+            Let&apos;s Connect
           </Link>
         </div>
       </div>
