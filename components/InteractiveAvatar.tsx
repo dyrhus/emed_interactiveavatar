@@ -197,37 +197,37 @@ export default function InteractiveAvatar() {
             <CardBody className="p-0 flex flex-col">
               {stream ? (
                 <div className="w-full h-[400px] justify-center items-center flex overflow-hidden">
-              <video
-                ref={mediaStream}
-                autoPlay
-                playsInline
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              >
-                <track kind="captions" />
-              </video>
-              <div className="flex flex-col gap-2 absolute bottom-3 right-3 z-10">
-                <Button
-                  className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
-                  size="md"
-                  variant="shadow"
-                  onClick={handleInterrupt}
-                >
-                  Interrupt task
-                </Button>
-                <Button
-                  className="bg-gradient-to-tr from-indigo-500 to-indigo-300  text-white rounded-lg"
-                  size="md"
-                  variant="shadow"
-                  onClick={endSession}
-                >
-                  End session
-                </Button>
-              </div>
-            </div>
+                  <video
+                    ref={mediaStream}
+                    autoPlay
+                    playsInline
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  >
+                    <track kind="captions" />
+                  </video>
+                  <div className="flex flex-col gap-2 absolute bottom-3 right-3 z-10">
+                    <Button
+                      className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
+                      size="md"
+                      variant="shadow"
+                      onClick={handleInterrupt}
+                    >
+                      Interrupt task
+                    </Button>
+                    <Button
+                      className="bg-gradient-to-tr from-indigo-500 to-indigo-300  text-white rounded-lg"
+                      size="md"
+                      variant="shadow"
+                      onClick={endSession}
+                    >
+                      End session
+                    </Button>
+                  </div>
+                </div>
           ) : !isLoadingSession ? (
             <div className="h-full justify-center items-center flex flex-col gap-4 p-4">
               <div className="flex flex-col gap-2 w-full max-w-[300px]">
