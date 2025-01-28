@@ -189,14 +189,14 @@ export default function InteractiveAvatar() {
   return (
     <div className="w-full flex flex-col gap-4">
       <div className="flex justify-center w-full py-8">
-        <div className="relative w-[390px] h-[844px] bg-white rounded-[60px] shadow-xl border-[14px] border-black overflow-hidden">
+        <div className="relative w-[320px] h-[690px] bg-white rounded-[40px] shadow-xl border-[12px] border-black overflow-hidden">
           {/* iPhone Notch */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[32px] w-[168px] bg-black rounded-b-[24px] z-10"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[25px] w-[120px] bg-black rounded-b-[18px] z-10"></div>
           
           <Card className="w-full h-full rounded-none">
             <CardBody className="p-0 flex flex-col">
               {stream ? (
-                <div className="w-full h-[400px] justify-center items-center flex overflow-hidden">
+                <div className="w-full h-[300px] justify-center items-center flex overflow-hidden">
                   <video
                     ref={mediaStream}
                     autoPlay
@@ -212,7 +212,7 @@ export default function InteractiveAvatar() {
                   <div className="flex flex-col gap-2 absolute bottom-3 right-3 z-10">
                     <Button
                       className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
-                      size="md"
+                      size="sm"
                       variant="shadow"
                       onClick={handleInterrupt}
                     >
@@ -220,7 +220,7 @@ export default function InteractiveAvatar() {
                     </Button>
                     <Button
                       className="bg-gradient-to-tr from-indigo-500 to-indigo-300  text-white rounded-lg"
-                      size="md"
+                      size="sm"
                       variant="shadow"
                       onClick={endSession}
                     >
