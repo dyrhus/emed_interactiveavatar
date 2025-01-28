@@ -133,16 +133,6 @@ export default function InteractiveAvatar() {
       });
     setIsLoadingRepeat(false);
   }
-  async function handleInterrupt() {
-    if (!avatar.current) {
-      setDebug("Avatar API not initialized");
-
-      return;
-    }
-    await avatar.current.interrupt().catch((e) => {
-      setDebug(e.message);
-    });
-  }
   async function endSession() {
     await avatar.current?.stopAvatar();
     setStream(undefined);
