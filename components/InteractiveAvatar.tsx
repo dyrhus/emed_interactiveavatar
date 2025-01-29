@@ -107,6 +107,14 @@ export default function InteractiveAvatar() {
       });
 
       setData(res);
+
+      // Add the greeting after session creation
+      await avatar.current?.speak({
+        text: "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.",
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+
       // default to voice mode
       await avatar.current?.startVoiceChat({
         useSilencePrompt: false,
