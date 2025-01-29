@@ -12,8 +12,8 @@ export default function Hero() {
               combines cutting-edge technology with personalized healthcare support.
             </p>
           </div>
-          <div className="space-y-12">
-            <div className="flex flex-wrap justify-center gap-10">
+          <div className="space-y-8 md:space-y-12">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-10">
               <div className="flex items-center space-x-2">
                 <svg
                   className=" h-5 w-5 text-green-500"
