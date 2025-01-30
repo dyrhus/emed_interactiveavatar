@@ -211,14 +211,39 @@ export default function InteractiveAvatar({
   const handleDemoGeneration = async (formData: DemoConfig) => {
     setIsGeneratingDemo(true);
     try {
-      // Here you would typically make an API call to save the demo configuration
-      // and generate a unique URL
-      const demoUrl = `${window.location.origin}/demo/${Date.now()}`;
-      setDemoConfig({ ...formData, demoUrl });
+      const response = await fetch('/api/generate-demo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        setDemoConfig({ ...formData, demoUrl: data.demoUrl });
+      } else {
+        throw new Error(data.message);
+      }
     } catch (error) {
       setDebug(`Error generating demo: ${error}`);
     } finally {
       setIsGeneratingDemo(false);
+    }
+  };
+
+  // Function to play outro script
+  const playOutroScript = async () => {
+    if (!avatar.current || !outroScript) return;
+    
+    try {
+      await avatar.current.speak({
+        text: outroScript,
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+    } catch (error) {
+      setDebug(`Error playing outro script: ${error}`);
     }
   };
 
@@ -340,7 +365,7 @@ export default function InteractiveAvatar({
               )}
             </CardFooter>
           </Card>
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center gap-4 mt-4">
             <QAButton
               isDisabled={!stream}
               onStartQA={async () => {
@@ -352,6 +377,16 @@ export default function InteractiveAvatar({
                 });
               }}
             />
+            {outroScript && (
+              <Button
+                className="bg-black text-white hover:bg-gray-900"
+                size="lg"
+                isDisabled={!stream}
+                onClick={playOutroScript}
+              >
+                Play Closing Message
+              </Button>
+            )}
           </div>
           <p className="font-mono text-right">
             <span className="font-bold">Console:</span>
