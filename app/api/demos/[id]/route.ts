@@ -5,16 +5,19 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    // TODO: Replace with actual database fetch
-    // This is a mock implementation
-    const mockDemo = {
-      customerName: "Test Company",
-      introScript: "Welcome to eMed's GLP-1 program demo. Our program is designed to be fast, easy, and affordable.",
-      outroScript: "Thank you for your interest in eMed's GLP-1 program. Would you like to proceed with enrollment?",
-      password: "demo123" // In reality, this would be hashed
-    };
+    const prisma = new PrismaClient();
+    const demo = await prisma.demo.findUnique({
+      where: { id: params.id }
+    });
 
-    return NextResponse.json(mockDemo);
+    if (!demo) {
+      return NextResponse.json(
+        { success: false, message: 'Demo not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(demo);
 
   } catch (error) {
     return NextResponse.json(

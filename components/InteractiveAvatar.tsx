@@ -83,6 +83,10 @@ export default function InteractiveAvatar({
     avatar.current = new StreamingAvatar({
       token: newToken,
     });
+
+    // Initialize with custom script if provided
+    const initialGreeting = initialScript || 
+      "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.";
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
       setDebug("Avatar started talking");
     });
@@ -128,7 +132,7 @@ export default function InteractiveAvatar({
 
       // Add the greeting after session creation
       await avatar.current?.speak({
-        text: "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.",
+        text: initialGreeting,
         taskType: TaskType.REPEAT,
         taskMode: TaskMode.SYNC
       });
@@ -334,6 +338,19 @@ export default function InteractiveAvatar({
               )}
             </CardFooter>
           </Card>
+          <div className="flex justify-center mt-4">
+            <QAButton
+              isDisabled={!stream}
+              onStartQA={async () => {
+                if (!avatar.current) return;
+                await avatar.current.speak({
+                  text: "I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
+                  taskType: TaskType.REPEAT,
+                  taskMode: TaskMode.SYNC
+                });
+              }}
+            />
+          </div>
           <p className="font-mono text-right">
             <span className="font-bold">Console:</span>
             <br />

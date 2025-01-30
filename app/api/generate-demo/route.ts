@@ -5,14 +5,21 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { customerName, introScript, outroScript, password } = body;
 
-    // Here you would typically:
-    // 1. Validate the input
-    // 2. Save to database
-    // 3. Generate unique URL
-    // 4. Handle password hashing if provided
+    const prisma = new PrismaClient();
+    
+    // Hash password if provided
+    const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
+    
+    const demo = await prisma.demo.create({
+      data: {
+        customerName,
+        introScript,
+        outroScript,
+        password: hashedPassword,
+      },
+    });
 
-    const demoId = Date.now().toString();
-    const demoUrl = `/demo/${demoId}`;
+    const demoUrl = `/demo/${demo.id}`;
 
     return NextResponse.json({ 
       success: true, 
