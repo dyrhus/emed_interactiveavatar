@@ -31,6 +31,7 @@ import { STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
 interface InteractiveAvatarProps {
   initialScript?: string;
+  outroScript?: string;
 }
 
 interface DemoConfig {
@@ -42,7 +43,8 @@ interface DemoConfig {
 }
 
 export default function InteractiveAvatar({ 
-  initialScript 
+  initialScript,
+  outroScript 
 }: InteractiveAvatarProps) {
   const [demoConfig, setDemoConfig] = useState<DemoConfig | null>(null);
   const [isGeneratingDemo, setIsGeneratingDemo] = useState(false);
