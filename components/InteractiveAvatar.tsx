@@ -27,6 +27,11 @@ import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 import { STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
+interface InteractiveAvatarProps {
+  initialScript?: string;
+  outroScript?: string;
+}
+
 interface DemoConfig {
   customerName: string;
   introScript: string;
@@ -35,7 +40,10 @@ interface DemoConfig {
   demoUrl?: string;
 }
 
-export default function InteractiveAvatar() {
+export default function InteractiveAvatar({ 
+  initialScript,
+  outroScript 
+}: InteractiveAvatarProps) {
   const [demoConfig, setDemoConfig] = useState<DemoConfig | null>(null);
   const [isGeneratingDemo, setIsGeneratingDemo] = useState(false);
   const [isLoadingSession, setIsLoadingSession] = useState(false);
