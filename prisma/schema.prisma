@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "redis"
-  url      = env("UPSTASH_REDIS_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model Demo {
-  id           String   @id @default(cuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   customerName String
   introScript  String
   outroScript  String
@@ -16,5 +16,5 @@ model Demo {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  @@map("demo")
+  @@map("demos")
 }
