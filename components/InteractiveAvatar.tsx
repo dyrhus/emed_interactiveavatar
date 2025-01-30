@@ -1,4 +1,6 @@
 import type { StartAvatarResponse } from "@heygen/streaming-avatar";
+import DemoCustomizationForm from "./DemoCustomizationForm";
+import QAButton from "./QAButton";
 
 import StreamingAvatar, {
   AvatarQuality,
@@ -29,7 +31,6 @@ import { STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
 interface InteractiveAvatarProps {
   initialScript?: string;
-  outroScript?: string;
 }
 
 interface DemoConfig {
@@ -41,8 +42,7 @@ interface DemoConfig {
 }
 
 export default function InteractiveAvatar({ 
-  initialScript,
-  outroScript 
+  initialScript 
 }: InteractiveAvatarProps) {
   const [demoConfig, setDemoConfig] = useState<DemoConfig | null>(null);
   const [isGeneratingDemo, setIsGeneratingDemo] = useState(false);
