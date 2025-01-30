@@ -27,7 +27,17 @@ import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 import { STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
+interface DemoConfig {
+  customerName: string;
+  introScript: string;
+  outroScript: string;
+  password?: string;
+  demoUrl?: string;
+}
+
 export default function InteractiveAvatar() {
+  const [demoConfig, setDemoConfig] = useState<DemoConfig | null>(null);
+  const [isGeneratingDemo, setIsGeneratingDemo] = useState(false);
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
@@ -184,8 +194,35 @@ export default function InteractiveAvatar() {
     }
   }, [mediaStream, stream]);
 
+  const handleDemoGeneration = async (formData: DemoConfig) => {
+    setIsGeneratingDemo(true);
+    try {
+      // Here you would typically make an API call to save the demo configuration
+      // and generate a unique URL
+      const demoUrl = `${window.location.origin}/demo/${Date.now()}`;
+      setDemoConfig({ ...formData, demoUrl });
+    } catch (error) {
+      setDebug(`Error generating demo: ${error}`);
+    } finally {
+      setIsGeneratingDemo(false);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-4">
+      <div className="flex flex-col items-center mb-8">
+        <h2 className="text-2xl font-bold mb-4">Create Custom Demo</h2>
+        <DemoCustomizationForm 
+          onSubmit={handleDemoGeneration}
+          isLoading={isGeneratingDemo}
+        />
+        {demoConfig?.demoUrl && (
+          <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+            <p className="font-semibold">Demo URL:</p>
+            <p className="text-blue-600">{demoConfig.demoUrl}</p>
+          </div>
+        )}
+      </div>
       <div className="flex justify-center w-full py-8">
         <div className="relative w-[280px] h-[580px] bg-white rounded-[35px] shadow-xl border-[10px] border-black overflow-hidden">
           {/* iPhone Notch */}
