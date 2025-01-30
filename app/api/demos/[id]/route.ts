@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server';
+import { store } from '@/lib/store';
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const prisma = new PrismaClient();
-    const demo = await prisma.demo.findUnique({
-      where: { id: params.id }
-    });
+    const demo = store.getDemo(params.id);
 
     if (!demo) {
       return NextResponse.json(

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { store } from '@/lib/store';
 
 export async function POST(
   request: Request,
@@ -7,11 +8,7 @@ export async function POST(
   try {
     const { password } = await request.json();
     
-    // TODO: Replace with actual database verification
-    // This is a mock implementation
-    const mockPassword = "demo123"; // In reality, this would be hashed and stored in DB
-    
-    if (password === mockPassword) {
+    if (store.verifyPassword(params.id, password)) {
       return NextResponse.json({ 
         success: true,
         message: 'Password verified successfully'
