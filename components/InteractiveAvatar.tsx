@@ -126,8 +126,9 @@ export default function InteractiveAvatar({
       const initialGreeting = initialScript || 
         "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.";
 
-      // Set initial chat mode
+      // Set initial chat mode to text mode and ensure voice chat is not initialized
       setChatMode("text_mode");
+      avatar.current?.closeVoiceChat();
 
       // Play the complete script sequence
       await playCompleteScript(initialGreeting);
@@ -252,7 +253,10 @@ export default function InteractiveAvatar({
         // Small pause before initializing voice chat
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Initialize voice chat after permission message
+        // Wait for user to acknowledge the permission message
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Now initialize voice chat and request permissions
         await avatar.current?.startVoiceChat({
           useSilencePrompt: false,
         });
