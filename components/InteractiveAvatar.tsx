@@ -45,8 +45,6 @@ export default function InteractiveAvatar({
   initialScript,
   outroScript 
 }: InteractiveAvatarProps) {
-  const [demoConfig, setDemoConfig] = useState<DemoConfig | null>(null);
-  const [isGeneratingDemo, setIsGeneratingDemo] = useState(false);
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
@@ -207,29 +205,6 @@ export default function InteractiveAvatar({
     }
   }, [mediaStream, stream]);
 
-  const handleDemoGeneration = async (formData: DemoConfig) => {
-    setIsGeneratingDemo(true);
-    try {
-      const response = await fetch('/api/generate-demo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      const data = await response.json();
-      if (data.success) {
-        setDemoConfig({ ...formData, demoUrl: data.demoUrl });
-      } else {
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      setDebug(`Error generating demo: ${error}`);
-    } finally {
-      setIsGeneratingDemo(false);
-    }
-  };
 
   // Function to play outro script
   const playOutroScript = async () => {

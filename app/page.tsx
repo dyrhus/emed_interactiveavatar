@@ -28,7 +28,8 @@ export default function Home() {
         throw new Error(data.message);
       }
     } catch (error) {
-      console.error('Error generating demo:', error);
+      // Handle error appropriately, could add toast notification here
+      throw new Error('Failed to generate demo');
     }
   };
 
