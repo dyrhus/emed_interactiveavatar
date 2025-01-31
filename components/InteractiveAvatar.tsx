@@ -43,7 +43,12 @@ export default function InteractiveAvatar({
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
-  const [debug, setDebug] = useState<string>();
+  const [debug, setDebug] = useState<string>("");
+  
+  const logDebug = (message: string) => {
+    console.log(message);
+    setDebug(message);
+  };
   const knowledgeId = "046b4e319f334715a246e6b9977e42ca";
   const avatarId = "Elenora_FitnessCoach_public";
   const [language, setLanguage] = useState<string>("en");
@@ -130,7 +135,7 @@ export default function InteractiveAvatar({
       // Ensure voice chat is disabled initially
       await avatar.current?.closeVoiceChat();
       setChatMode("text_mode");
-      setDebug("[Session Start] Voice chat disabled, text mode active");
+      logDebug("[Session Start] Voice chat disabled, text mode active");
 
       // Play the complete script sequence without Q&A setup
       await playCompleteScript(initialGreeting, false);
@@ -237,80 +242,82 @@ export default function InteractiveAvatar({
     if (!avatar.current || !outroScript) return;
     
     try {
-      setDebug("[Outro Flow] Starting outro sequence");
+      logDebug("[Outro Flow] Starting outro sequence");
       
       // Ensure voice chat is closed before starting
       await avatar.current?.closeVoiceChat();
-      setDebug("[Outro Flow] Voice chat closed");
+      logDebug("[Outro Flow] Voice chat closed");
       
       // Play outro script
-      setDebug("[Outro Flow] Playing outro script");
+      logDebug("[Outro Flow] Playing outro script");
       await avatar.current.speak({
         text: outroScript,
         taskType: TaskType.REPEAT,
         taskMode: TaskMode.SYNC
       });
-      setDebug("[Outro Flow] Outro script completed");
+      logDebug("[Outro Flow] Outro script completed");
 
       // Brief pause after outro
       await new Promise(resolve => setTimeout(resolve, 1000));
-      setDebug("[Outro Flow] Post-outro pause completed");
+      logDebug("[Outro Flow] Post-outro pause completed");
 
       // If Q&A is enabled and setup is requested, handle the Q&A setup
       if (includeQA && setupQA) {
-        setDebug("[Outro Flow] Q&A is enabled, proceeding with setup");
-        setDebug("[Q&A Flow] Starting Q&A permission sequence");
+        logDebug("[Outro Flow] Q&A is enabled, proceeding with setup");
+        logDebug("[Q&A Flow] Starting Q&A permission sequence");
         
         // Ensure voice chat is disabled before permission message
         await avatar.current?.closeVoiceChat();
-        setDebug("[Q&A Flow] Voice chat explicitly disabled before permission message");
+        logDebug("[Q&A Flow] Voice chat explicitly disabled before permission message");
         
         // Play Q&A permission message first
-        setDebug("[Q&A Flow] Playing permission message");
+        logDebug("[Q&A Flow] Playing permission message");
         await avatar.current.speak({
           text: QA_PERMISSION_SCRIPT,
           taskType: TaskType.REPEAT,
           taskMode: TaskMode.SYNC
         });
-        setDebug("[Q&A Flow] Permission message completed");
+        logDebug("[Q&A Flow] Permission message completed");
         
         // Important pause to ensure the message is fully delivered
-        setDebug("[Q&A Flow] Starting post-permission-message pause");
+        logDebug("[Q&A Flow] Starting post-permission-message pause");
         await new Promise(resolve => setTimeout(resolve, 3000));
-        setDebug("[Q&A Flow] Post-permission-message pause completed");
+        logDebug("[Q&A Flow] Post-permission-message pause completed");
         
         // Now handle microphone permissions
-        setDebug("[Q&A Flow] Beginning microphone permission sequence");
+        logDebug("[Q&A Flow] Beginning microphone permission sequence");
         try {
           // Check current permission status
           const permissionResult = await navigator.permissions.query({ name: 'microphone' as PermissionName });
-          setDebug(`[Q&A Flow] Initial permission status: ${permissionResult.state}`);
+          logDebug(`[Q&A Flow] Initial permission status: ${permissionResult.state}`);
           
           // Request microphone access
-          setDebug("[Q&A Flow] Requesting microphone access");
+          logDebug("[Q&A Flow] Requesting microphone access");
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          setDebug("[Q&A Flow] Microphone access granted successfully");
+          logDebug("[Q&A Flow] Microphone access granted successfully");
           
           // Clean up test stream
           stream.getTracks().forEach(track => {
             track.stop();
-            setDebug("[Q&A Flow] Test stream cleaned up");
+            logDebug("[Q&A Flow] Test stream cleaned up");
           });
           
           // Initialize voice chat
-          setDebug("[Q&A Flow] Starting voice chat initialization");
+          logDebug("[Q&A Flow] Starting voice chat initialization");
           await avatar.current?.startVoiceChat({
             useSilencePrompt: false,
           });
-          setDebug("[Q&A Flow] Voice chat initialized successfully");
+          logDebug("[Q&A Flow] Voice chat initialized successfully");
           setChatMode("voice_mode");
-          setDebug("[Q&A Flow] Chat mode set to voice");
+          logDebug("[Q&A Flow] Chat mode set to voice");
         } catch (error) {
-          setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
+          logDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
+          console.error("[Q&A Flow] Microphone setup error:", error);
         }
       }
     } catch (error) {
-      setDebug(`Error playing outro script: ${error}`);
+      logDebug(`Error playing outro script: ${error}`);
+      console.error("Outro script error:", error);
     }
   };
 
@@ -440,7 +447,10 @@ export default function InteractiveAvatar({
                 className="bg-black text-white hover:bg-gray-900"
                 size="lg"
                 isDisabled={!stream}
-                onClick={() => playOutroScript(true)}
+                onClick={async () => {
+                  logDebug("[Button Click] Starting outro script sequence");
+                  await playOutroScript(true);
+                }}
               >
                 Play Closing Message
               </Button>
