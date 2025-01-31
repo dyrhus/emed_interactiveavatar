@@ -135,8 +135,8 @@ export default function InteractiveAvatar({
       setChatMode("text_mode");
       logDebug("[Session Start] Voice chat disabled, text mode active");
 
-      // Play the complete script sequence with Q&A if enabled
-      await playCompleteScript(initialGreeting, includeQA);
+      // Play the complete script sequence
+      await playCompleteScript(initialGreeting);
 
     } catch (error) {
       setDebug(`Error starting avatar session: ${error}`);
@@ -204,7 +204,7 @@ export default function InteractiveAvatar({
 
 
   // Function to play the complete script sequence
-  const playCompleteScript = async (initialGreeting: string, includeQASetup: boolean = true) => {
+  const playCompleteScript = async (initialGreeting: string) => {
     if (!avatar.current) return;
 
     try {
@@ -228,7 +228,51 @@ export default function InteractiveAvatar({
       // Play outro if provided
       if (outroScript) {
         setDebug("[Script Flow] Starting outro sequence");
-        await playOutroScript(includeQASetup);
+        await avatar.current.speak({
+          text: outroScript,
+          taskType: TaskType.REPEAT,
+          taskMode: TaskMode.SYNC
+        });
+        setDebug("[Script Flow] Outro script completed");
+
+        // If Q&A is enabled, handle the setup after outro
+        if (includeQA) {
+          // Brief pause after outro
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          // Play permission message
+          setDebug("[Q&A Flow] Playing permission message");
+          await avatar.current.speak({
+            text: QA_PERMISSION_SCRIPT,
+            taskType: TaskType.REPEAT,
+            taskMode: TaskMode.SYNC
+          });
+          
+          // Important pause after permission message
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          
+          try {
+            setDebug("[Q&A Flow] Requesting microphone access");
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            stream.getTracks().forEach(track => track.stop());
+            setDebug("[Q&A Flow] Microphone access granted");
+            
+            await avatar.current.startVoiceChat({
+              useSilencePrompt: false,
+            });
+            setChatMode("voice_mode");
+            setDebug("[Q&A Flow] Voice chat initialized");
+            
+            await avatar.current.speak({
+              text: "I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
+              taskType: TaskType.REPEAT,
+              taskMode: TaskMode.SYNC
+            });
+          } catch (error) {
+            setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
+            setChatMode("text_mode");
+          }
+        }
       }
     } catch (error) {
       setDebug(`Error playing complete script: ${error}`);
