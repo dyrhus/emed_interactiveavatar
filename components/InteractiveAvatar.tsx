@@ -82,6 +82,18 @@ export default function InteractiveAvatar({
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
       setDebug("Avatar started talking");
     });
+
+    avatar.current.on(StreamingEvents.PERMISSION_PROMPT, () => {
+      setDebug("Microphone permission prompt displayed");
+    });
+
+    avatar.current.on(StreamingEvents.PERMISSION_GRANTED, () => {
+      setDebug("Microphone permission granted");
+    });
+
+    avatar.current.on(StreamingEvents.PERMISSION_DENIED, () => {
+      setDebug("Microphone permission denied");
+    });
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
       setDebug("Avatar stopped talking");
     });
@@ -242,27 +254,37 @@ export default function InteractiveAvatar({
 
       // If Q&A is enabled, prompt for microphone permissions
       if (includeQA) {
+        setDebug("Starting Q&A permission flow...");
+        
         // Small pause before Q&A message
         await new Promise(resolve => setTimeout(resolve, 1000));
+        setDebug("Completed initial pause");
         
         // Play Q&A permission message
+        setDebug("Playing permission message...");
         await avatar.current.speak({
           text: QA_PERMISSION_SCRIPT,
           taskType: TaskType.REPEAT,
           taskMode: TaskMode.SYNC
         });
+        setDebug("Permission message completed");
         
         // Wait for the permission message to complete and user to acknowledge
+        setDebug("Starting acknowledgment pause...");
         await new Promise(resolve => setTimeout(resolve, 3000));
+        setDebug("Completed acknowledgment pause");
         
         // Now initialize voice chat and request permissions
         try {
+          setDebug("Initializing voice chat...");
           await avatar.current?.startVoiceChat({
             useSilencePrompt: false,
           });
+          setDebug("Voice chat initialized successfully");
           setChatMode("voice_mode");
         } catch (error) {
           setDebug(`Error initializing voice chat: ${error}`);
+          console.error("Voice chat initialization error:", error);
         }
       }
     } catch (error) {
