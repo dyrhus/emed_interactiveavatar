@@ -284,7 +284,6 @@ export default function InteractiveAvatar({
           setChatMode("voice_mode");
         } catch (error) {
           setDebug(`Error initializing voice chat: ${error}`);
-          console.error("Voice chat initialization error:", error);
         }
       }
     } catch (error) {
