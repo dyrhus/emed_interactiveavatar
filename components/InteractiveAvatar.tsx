@@ -135,8 +135,8 @@ export default function InteractiveAvatar({
       setChatMode("text_mode");
       logDebug("[Session Start] Voice chat disabled, text mode active");
 
-      // Play the complete script sequence without Q&A setup
-      await playCompleteScript(initialGreeting, false);
+      // Play the complete script sequence with Q&A if enabled
+      await playCompleteScript(initialGreeting, includeQA);
 
     } catch (error) {
       setDebug(`Error starting avatar session: ${error}`);
@@ -236,7 +236,7 @@ export default function InteractiveAvatar({
   };
 
   // Function to play outro script and handle Q&A setup
-  const playOutroScript = async (setupQA: boolean = true) => {
+  const playOutroScript = async (setupQA: boolean) => {
     if (!avatar.current || !outroScript) return;
     
     try {
@@ -259,8 +259,8 @@ export default function InteractiveAvatar({
       await new Promise(resolve => setTimeout(resolve, 1000));
       logDebug("[Outro Flow] Post-outro pause completed");
 
-      // If Q&A is enabled and setup is requested, handle the Q&A setup
-      if (includeQA && setupQA) {
+      // If Q&A setup is requested, handle the Q&A setup
+      if (setupQA) {
         logDebug("[Outro Flow] Q&A is enabled, proceeding with setup");
         logDebug("[Q&A Flow] Starting Q&A permission sequence");
         
