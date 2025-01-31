@@ -225,7 +225,7 @@ export default function InteractiveAvatar({
       // Play outro if provided
       if (outroScript) {
         setDebug("[Script Flow] Starting outro sequence");
-        await playOutroScript();
+        await playOutroScript(includeQASetup);
       }
     } catch (error) {
       setDebug(`Error playing complete script: ${error}`);
@@ -233,7 +233,7 @@ export default function InteractiveAvatar({
   };
 
   // Function to play outro script and handle Q&A setup
-  const playOutroScript = async () => {
+  const playOutroScript = async (setupQA: boolean = true) => {
     if (!avatar.current || !outroScript) return;
     
     try {
@@ -247,8 +247,8 @@ export default function InteractiveAvatar({
         taskMode: TaskMode.SYNC
       });
 
-      // If Q&A is enabled, handle the Q&A setup
-      if (includeQA) {
+      // If Q&A is enabled and setup is requested, handle the Q&A setup
+      if (includeQA && setupQA) {
         setDebug("[Q&A Flow] Starting Q&A permission sequence");
         
         // Ensure voice chat is disabled before permission message
