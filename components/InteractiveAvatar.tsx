@@ -33,15 +33,7 @@ interface InteractiveAvatarProps {
   outroScript?: string;
 }
 
-interface DemoConfig {
-  customerName: string;
-  introScript: string;
-  outroScript: string;
-  password?: string;
-  demoUrl?: string;
-}
-
-export default function InteractiveAvatar({ 
+export default function InteractiveAvatar({
   initialScript,
   outroScript 
 }: InteractiveAvatarProps) {
