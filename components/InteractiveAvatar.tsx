@@ -126,9 +126,8 @@ export default function InteractiveAvatar({
       const initialGreeting = initialScript || 
         "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.";
 
-      // Set initial chat mode to text mode and ensure voice chat is not initialized
+      // Set initial chat mode to text mode
       setChatMode("text_mode");
-      avatar.current?.closeVoiceChat();
 
       // Play the complete script sequence
       await playCompleteScript(initialGreeting);
@@ -231,6 +230,9 @@ export default function InteractiveAvatar({
     if (!avatar.current || !outroScript) return;
     
     try {
+      // Ensure voice chat is closed before starting
+      await avatar.current?.closeVoiceChat();
+      
       // Play outro script
       await avatar.current.speak({
         text: outroScript,
@@ -250,17 +252,18 @@ export default function InteractiveAvatar({
           taskMode: TaskMode.SYNC
         });
         
-        // Small pause before initializing voice chat
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Wait for user to acknowledge the permission message
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Wait for the permission message to complete and user to acknowledge
+        await new Promise(resolve => setTimeout(resolve, 3000));
         
         // Now initialize voice chat and request permissions
-        await avatar.current?.startVoiceChat({
-          useSilencePrompt: false,
-        });
-        setChatMode("voice_mode");
+        try {
+          await avatar.current?.startVoiceChat({
+            useSilencePrompt: false,
+          });
+          setChatMode("voice_mode");
+        } catch (error) {
+          setDebug(`Error initializing voice chat: ${error}`);
+        }
       }
     } catch (error) {
       setDebug(`Error playing outro script: ${error}`);
