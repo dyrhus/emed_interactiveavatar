@@ -5,6 +5,7 @@ interface DemoFormData {
   customerName: string;
   introScript: string;
   outroScript: string;
+  includeQA: boolean;
   password?: string;
 }
 
@@ -18,6 +19,7 @@ export default function DemoCustomizationForm({ onSubmit, isLoading }: DemoCusto
     customerName: "",
     introScript: "",
     outroScript: "",
+    includeQA: false,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,6 +50,17 @@ export default function DemoCustomizationForm({ onSubmit, isLoading }: DemoCusto
         onChange={(e) => setFormData({ ...formData, outroScript: e.target.value })}
         required
       />
+      <div className="flex items-center gap-2 py-2">
+        <label className="flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="form-checkbox h-5 w-5 text-black rounded border-gray-300"
+            checked={formData.includeQA}
+            onChange={(e) => setFormData({ ...formData, includeQA: e.target.checked })}
+          />
+          <span className="ml-2">Include Q&A with live AI Avatar?</span>
+        </label>
+      </div>
       <Input
         type="password"
         label="Password (Optional)"

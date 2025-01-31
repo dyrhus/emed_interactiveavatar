@@ -319,17 +319,19 @@ export default function InteractiveAvatar({
             </CardFooter>
           </Card>
           <div className="flex justify-center gap-4 mt-4">
-            <QAButton
-              isDisabled={!stream}
-              onStartQA={async () => {
-                if (!avatar.current) return;
-                await avatar.current.speak({
-                  text: "I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
-                  taskType: TaskType.REPEAT,
-                  taskMode: TaskMode.SYNC
-                });
-              }}
-            />
+            {demoConfig.includeQA && (
+              <QAButton
+                isDisabled={!stream}
+                onStartQA={async () => {
+                  if (!avatar.current) return;
+                  await avatar.current.speak({
+                    text: "I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
+                    taskType: TaskType.REPEAT,
+                    taskMode: TaskMode.SYNC
+                  });
+                }}
+              />
+            )}
             {outroScript && (
               <Button
                 className="bg-black text-white hover:bg-gray-900"
