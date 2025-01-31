@@ -237,26 +237,25 @@ export default function InteractiveAvatar({
 
         // If Q&A is enabled, handle the setup after outro
         if (includeQA) {
-          // Brief pause after outro
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          
-          // Play permission message
-          setDebug("[Q&A Flow] Playing permission message");
-          await avatar.current.speak({
-            text: QA_PERMISSION_SCRIPT,
-            taskType: TaskType.REPEAT,
-            taskMode: TaskMode.SYNC
-          });
-          
-          // Important pause after permission message
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          
           try {
+            // Request microphone access first
             setDebug("[Q&A Flow] Requesting microphone access");
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             stream.getTracks().forEach(track => track.stop());
             setDebug("[Q&A Flow] Microphone access granted");
+
+            // Brief pause after outro
+            await new Promise(resolve => setTimeout(resolve, 1000));
             
+            // Play permission message
+            setDebug("[Q&A Flow] Playing permission message");
+            await avatar.current.speak({
+              text: QA_PERMISSION_SCRIPT,
+              taskType: TaskType.REPEAT,
+              taskMode: TaskMode.SYNC
+            });
+            
+            // Initialize voice chat
             await avatar.current.startVoiceChat({
               useSilencePrompt: false,
             });
