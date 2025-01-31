@@ -242,22 +242,22 @@ export default function InteractiveAvatar({
         // If Q&A is enabled, handle the setup after outro
         if (includeQA) {
           try {
+            // Request microphone access first
+            setDebug("[Q&A Flow] Requesting microphone access");
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            stream.getTracks().forEach(track => track.stop());
+            setDebug("[Q&A Flow] Microphone access granted");
+
             // Brief pause after outro
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            // Play permission message first
+            // Play permission message
             setDebug("[Q&A Flow] Playing permission message");
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
               taskMode: TaskMode.SYNC
             });
-
-            // Request microphone access
-            setDebug("[Q&A Flow] Requesting microphone access");
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            stream.getTracks().forEach(track => track.stop());
-            setDebug("[Q&A Flow] Microphone access granted");
             
             // Initialize voice chat
             await avatar.current.startVoiceChat({
@@ -267,7 +267,7 @@ export default function InteractiveAvatar({
             setDebug("[Q&A Flow] Voice chat initialized");
             
             await avatar.current.speak({
-              text: "I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
+              text: "Great! Now that you've granted microphone access, I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
               taskType: TaskType.REPEAT,
               taskMode: TaskMode.SYNC
             });
