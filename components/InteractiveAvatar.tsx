@@ -83,17 +83,6 @@ export default function InteractiveAvatar({
       setDebug("Avatar started talking");
     });
 
-    avatar.current.on(StreamingEvents.PERMISSION_PROMPT, () => {
-      setDebug("Microphone permission prompt displayed");
-    });
-
-    avatar.current.on(StreamingEvents.PERMISSION_GRANTED, () => {
-      setDebug("Microphone permission granted");
-    });
-
-    avatar.current.on(StreamingEvents.PERMISSION_DENIED, () => {
-      setDebug("Microphone permission denied");
-    });
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
       setDebug("Avatar stopped talking");
     });
@@ -276,12 +265,20 @@ export default function InteractiveAvatar({
         
         // Now initialize voice chat and request permissions
         try {
-          setDebug("Initializing voice chat...");
-          await avatar.current?.startVoiceChat({
-            useSilencePrompt: false,
-          });
-          setDebug("Voice chat initialized successfully");
-          setChatMode("voice_mode");
+          setDebug("Requesting microphone permission...");
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            stream.getTracks().forEach(track => track.stop()); // Stop the stream after permission check
+            
+            setDebug("Microphone permission granted, initializing voice chat...");
+            await avatar.current?.startVoiceChat({
+              useSilencePrompt: false,
+            });
+            setDebug("Voice chat initialized successfully");
+            setChatMode("voice_mode");
+          } catch (permissionError) {
+            setDebug(`Microphone permission denied: ${permissionError}`);
+          }
         } catch (error) {
           setDebug(`Error initializing voice chat: ${error}`);
         }
