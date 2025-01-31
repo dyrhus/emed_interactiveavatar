@@ -283,8 +283,6 @@ export default function InteractiveAvatar({
           setChatMode("voice_mode");
         } catch (error) {
           setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
-        } catch (error) {
-          setDebug(`Error initializing voice chat: ${error}`);
         }
       }
     } catch (error) {
