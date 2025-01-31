@@ -1,6 +1,7 @@
 "use client";
 
 import DemoCustomizationForm from "@/components/DemoCustomizationForm";
+import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -34,10 +35,13 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-8">Create Custom Demo</h1>
         <DemoCustomizationForm onSubmit={handleDemoGeneration} />
+        </div>
       </div>
     </div>
   );
