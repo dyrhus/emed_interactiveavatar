@@ -135,10 +135,6 @@ export default function InteractiveAvatar({
       setChatMode("text_mode");
       logDebug("[Session Start] Voice chat disabled, text mode active");
 
-      // Ensure voice chat is disabled until Q&A portion
-      await avatar.current.closeVoiceChat();
-      logDebug("[Session Start] Voice chat capabilities disabled");
-
       // Play the complete script sequence
       await playCompleteScript(initialGreeting);
 
@@ -254,20 +250,23 @@ export default function InteractiveAvatar({
               taskMode: TaskMode.SYNC
             });
 
+            // Initialize voice chat capabilities
             setDebug("[Q&A Flow] Initializing voice chat capabilities");
-            // Initialize voice chat capabilities first
+            await avatar.current.closeVoiceChat();
             await avatar.current.startVoiceChat({
               useSilencePrompt: false,
             });
+            setDebug("[Q&A Flow] Voice chat capabilities initialized");
             
-            // Now request microphone permissions
+            // Request microphone permissions
             setDebug("[Q&A Flow] Requesting microphone access");
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             stream.getTracks().forEach(track => track.stop());
             setDebug("[Q&A Flow] Microphone access granted");
             
+            // Enable voice mode
             setChatMode("voice_mode");
-            setDebug("[Q&A Flow] Voice chat initialized");
+            setDebug("[Q&A Flow] Voice chat mode enabled");
             
             // Start Q&A
             await avatar.current.speak({
