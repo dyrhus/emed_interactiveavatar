@@ -135,6 +135,10 @@ export default function InteractiveAvatar({
       setChatMode("text_mode");
       logDebug("[Session Start] Voice chat disabled, text mode active");
 
+      // Disable voice chat capabilities until Q&A portion
+      avatar.current.disableVoiceChat();
+      logDebug("[Session Start] Voice chat capabilities disabled");
+
       // Play the complete script sequence
       await playCompleteScript(initialGreeting);
 
@@ -238,22 +242,26 @@ export default function InteractiveAvatar({
         // If Q&A is enabled, handle the setup after outro
         if (includeQA) {
           try {
-            // Request microphone access first
-            setDebug("[Q&A Flow] Requesting microphone access");
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            stream.getTracks().forEach(track => track.stop());
-            setDebug("[Q&A Flow] Microphone access granted");
-
             // Brief pause after outro
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            // Play permission message
+            // Play permission message first
             setDebug("[Q&A Flow] Playing permission message");
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
               taskMode: TaskMode.SYNC
             });
+
+            // Enable voice chat capabilities
+            avatar.current.enableVoiceChat();
+            setDebug("[Q&A Flow] Voice chat capabilities enabled");
+
+            // Now request microphone access
+            setDebug("[Q&A Flow] Requesting microphone access");
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            stream.getTracks().forEach(track => track.stop());
+            setDebug("[Q&A Flow] Microphone access granted");
             
             // Initialize voice chat
             await avatar.current.startVoiceChat({
