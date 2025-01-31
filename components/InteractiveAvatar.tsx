@@ -127,8 +127,10 @@ export default function InteractiveAvatar({
       const initialGreeting = initialScript || 
         "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.";
 
-      // Set initial chat mode to text mode
+      // Set initial chat mode to text mode and ensure no voice chat
       setChatMode("text_mode");
+      setDebug("Starting session in text mode");
+      await avatar.current?.closeVoiceChat();
 
       // Play the complete script sequence
       await playCompleteScript(initialGreeting);
@@ -241,44 +243,46 @@ export default function InteractiveAvatar({
         taskMode: TaskMode.SYNC
       });
 
-      // If Q&A is enabled, prompt for microphone permissions
+      // If Q&A is enabled, handle the Q&A setup
       if (includeQA) {
-        setDebug("Starting Q&A permission flow...");
+        setDebug("[Q&A Flow] Starting Q&A permission sequence");
         
-        // Small pause before Q&A message
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setDebug("Completed initial pause");
-        
-        // Play Q&A permission message
-        setDebug("Playing permission message...");
+        // Play Q&A permission message first
+        setDebug("[Q&A Flow] Playing permission message");
         await avatar.current.speak({
           text: QA_PERMISSION_SCRIPT,
           taskType: TaskType.REPEAT,
           taskMode: TaskMode.SYNC
         });
-        setDebug("Permission message completed");
+        setDebug("[Q&A Flow] Permission message completed");
         
-        // Wait for the permission message to complete and user to acknowledge
-        setDebug("Starting acknowledgment pause...");
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        setDebug("Completed acknowledgment pause");
+        // Brief pause after message
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // Now initialize voice chat and request permissions
+        // Now handle microphone permissions
+        setDebug("[Q&A Flow] Requesting microphone permissions");
         try {
-          setDebug("Requesting microphone permission...");
-          try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            stream.getTracks().forEach(track => track.stop()); // Stop the stream after permission check
-            
-            setDebug("Microphone permission granted, initializing voice chat...");
-            await avatar.current?.startVoiceChat({
-              useSilencePrompt: false,
-            });
-            setDebug("Voice chat initialized successfully");
-            setChatMode("voice_mode");
-          } catch (permissionError) {
-            setDebug(`Microphone permission denied: ${permissionError}`);
-          }
+          const permissionResult = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+          setDebug(`[Q&A Flow] Current permission status: ${permissionResult.state}`);
+          
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          setDebug("[Q&A Flow] Microphone access granted");
+          
+          // Clean up test stream
+          stream.getTracks().forEach(track => {
+            track.stop();
+            setDebug("[Q&A Flow] Test stream cleaned up");
+          });
+          
+          // Initialize voice chat
+          setDebug("[Q&A Flow] Initializing voice chat");
+          await avatar.current?.startVoiceChat({
+            useSilencePrompt: false,
+          });
+          setDebug("[Q&A Flow] Voice chat initialized successfully");
+          setChatMode("voice_mode");
+        } catch (error) {
+          setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
         } catch (error) {
           setDebug(`Error initializing voice chat: ${error}`);
         }
