@@ -1,5 +1,4 @@
 import type { StartAvatarResponse } from "@heygen/streaming-avatar";
-import DemoCustomizationForm from "./DemoCustomizationForm";
 import QAButton from "./QAButton";
 
 import StreamingAvatar, {
