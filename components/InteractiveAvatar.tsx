@@ -442,19 +442,6 @@ export default function InteractiveAvatar({
                 }}
               />
             )}
-            {outroScript && (
-              <Button
-                className="bg-black text-white hover:bg-gray-900"
-                size="lg"
-                isDisabled={!stream}
-                onClick={async () => {
-                  logDebug("[Button Click] Starting outro script sequence");
-                  await playOutroScript(true);
-                }}
-              >
-                Play Closing Message
-              </Button>
-            )}
           </div>
           <p className="font-mono text-right">
             <span className="font-bold">Console:</span>
