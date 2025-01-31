@@ -1,5 +1,4 @@
 import type { StartAvatarResponse } from "@heygen/streaming-avatar";
-import QAButton from "./QAButton";
 import { DEMO_PLAYER_SCRIPT, QA_PERMISSION_SCRIPT } from "@/app/lib/demoScripts";
 
 import StreamingAvatar, {
@@ -310,6 +309,15 @@ export default function InteractiveAvatar({
           logDebug("[Q&A Flow] Voice chat initialized successfully");
           setChatMode("voice_mode");
           logDebug("[Q&A Flow] Chat mode set to voice");
+          
+          // Automatically start Q&A interaction
+          logDebug("[Q&A Flow] Starting Q&A interaction");
+          await avatar.current.speak({
+            text: "I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
+            taskType: TaskType.REPEAT,
+            taskMode: TaskMode.SYNC
+          });
+          logDebug("[Q&A Flow] Q&A interaction started");
         } catch (error) {
           logDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
           console.error("[Q&A Flow] Microphone setup error:", error);
@@ -428,21 +436,6 @@ export default function InteractiveAvatar({
               )}
             </CardFooter>
           </Card>
-          <div className="flex justify-center gap-4 mt-4">
-            {includeQA && (
-              <QAButton
-                isDisabled={!stream}
-                onStartQA={async () => {
-                  if (!avatar.current) return;
-                  await avatar.current.speak({
-                    text: "I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
-                    taskType: TaskType.REPEAT,
-                    taskMode: TaskMode.SYNC
-                  });
-                }}
-              />
-            )}
-          </div>
           <p className="font-mono text-right">
             <span className="font-bold">Console:</span>
             <br />
