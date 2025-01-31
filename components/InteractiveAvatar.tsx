@@ -237,18 +237,28 @@ export default function InteractiveAvatar({
     if (!avatar.current || !outroScript) return;
     
     try {
+      setDebug("[Outro Flow] Starting outro sequence");
+      
       // Ensure voice chat is closed before starting
       await avatar.current?.closeVoiceChat();
+      setDebug("[Outro Flow] Voice chat closed");
       
       // Play outro script
+      setDebug("[Outro Flow] Playing outro script");
       await avatar.current.speak({
         text: outroScript,
         taskType: TaskType.REPEAT,
         taskMode: TaskMode.SYNC
       });
+      setDebug("[Outro Flow] Outro script completed");
+
+      // Brief pause after outro
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setDebug("[Outro Flow] Post-outro pause completed");
 
       // If Q&A is enabled and setup is requested, handle the Q&A setup
       if (includeQA && setupQA) {
+        setDebug("[Outro Flow] Q&A is enabled, proceeding with setup");
         setDebug("[Q&A Flow] Starting Q&A permission sequence");
         
         // Ensure voice chat is disabled before permission message
@@ -430,7 +440,7 @@ export default function InteractiveAvatar({
                 className="bg-black text-white hover:bg-gray-900"
                 size="lg"
                 isDisabled={!stream}
-                onClick={() => playOutroScript()}
+                onClick={() => playOutroScript(true)}
               >
                 Play Closing Message
               </Button>
