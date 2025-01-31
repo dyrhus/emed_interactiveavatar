@@ -128,11 +128,8 @@ export default function InteractiveAvatar({
         taskMode: TaskMode.SYNC
       });
 
-      // default to voice mode
-      await avatar.current?.startVoiceChat({
-        useSilencePrompt: false,
-      });
-      setChatMode("voice_mode");
+      // Set to text mode by default
+      setChatMode("text_mode");
     } catch (error) {
       setDebug(`Error starting avatar session: ${error}`);
     } finally {
@@ -198,7 +195,7 @@ export default function InteractiveAvatar({
   }, [mediaStream, stream]);
 
 
-  // Function to play outro script
+  // Function to play outro script and handle Q&A setup
   const playOutroScript = async () => {
     if (!avatar.current || !outroScript) return;
     
@@ -208,6 +205,21 @@ export default function InteractiveAvatar({
         taskType: TaskType.REPEAT,
         taskMode: TaskMode.SYNC
       });
+
+      // If Q&A is enabled, prompt for microphone permissions
+      if (demoConfig?.includeQA) {
+        await avatar.current.speak({
+          text: "Next, you will be prompted to accept microphone permissions so that we can have a live conversation and answer any questions you may have.",
+          taskType: TaskType.REPEAT,
+          taskMode: TaskMode.SYNC
+        });
+        
+        // Initialize voice chat after permission message
+        await avatar.current?.startVoiceChat({
+          useSilencePrompt: false,
+        });
+        setChatMode("voice_mode");
+      }
     } catch (error) {
       setDebug(`Error playing outro script: ${error}`);
     }
@@ -279,16 +291,18 @@ export default function InteractiveAvatar({
           </CardBody>
           <Divider />
             <CardFooter className="flex flex-col gap-3 relative border-t">
-              <Tabs
-                aria-label="Options"
-                selectedKey={chatMode}
-                onSelectionChange={(v) => {
-                  handleChangeChatMode(v);
-                }}
-              >
-                <Tab key="text_mode" title="Text mode" />
-                <Tab key="voice_mode" title="Voice mode" />
-              </Tabs>
+              {demoConfig?.includeQA && (
+                <Tabs
+                  aria-label="Options"
+                  selectedKey={chatMode}
+                  onSelectionChange={(v) => {
+                    handleChangeChatMode(v);
+                  }}
+                >
+                  <Tab key="text_mode" title="Text mode" />
+                  <Tab key="voice_mode" title="Voice mode" />
+                </Tabs>
+              )}
               {chatMode === "text_mode" ? (
                 <div className="w-full flex relative">
                   <InteractiveAvatarTextInput
