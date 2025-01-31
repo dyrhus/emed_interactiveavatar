@@ -27,10 +27,10 @@ export default function Home() {
       }
 
       const data = await response.json();
-      if (data && data.demoId) {
-        router.push(`/demo/${data.demoId}`);
-      } else {
-        throw new Error('Invalid demo response');
+      if (!data.success || !data.demoId) {
+        throw new Error(data.message || 'Invalid demo response');
+      }
+      router.push(`/demo/${data.demoId}`);
       }
     } catch (error) {
       alert(error instanceof Error ? error.message : 'Failed to generate demo');

@@ -16,8 +16,8 @@ export async function POST(request: Request) {
     const demoUrl = `/demo/${demo.id}`;
 
     return NextResponse.json({ 
-      success: true, 
-      demoUrl,
+      success: true,
+      demoId: demo.id,
       message: 'Demo generated successfully' 
     });
 
