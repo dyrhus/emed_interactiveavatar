@@ -13,8 +13,6 @@ export async function POST(request: Request) {
       password
     });
 
-    const demoUrl = `/demo/${demo.id}`;
-
     return NextResponse.json({ 
       success: true,
       demoId: demo.id,
