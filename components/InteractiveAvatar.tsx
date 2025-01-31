@@ -127,13 +127,13 @@ export default function InteractiveAvatar({
       const initialGreeting = initialScript || 
         "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.";
 
-      // Disable voice chat and set text mode
+      // Ensure voice chat is disabled initially
       await avatar.current?.closeVoiceChat();
       setChatMode("text_mode");
       setDebug("[Session Start] Voice chat disabled, text mode active");
 
-      // Play the complete script sequence
-      await playCompleteScript(initialGreeting);
+      // Play the complete script sequence without Q&A setup
+      await playCompleteScript(initialGreeting, false);
 
     } catch (error) {
       setDebug(`Error starting avatar session: ${error}`);
@@ -201,7 +201,7 @@ export default function InteractiveAvatar({
 
 
   // Function to play the complete script sequence
-  const playCompleteScript = async (initialGreeting: string) => {
+  const playCompleteScript = async (initialGreeting: string, includeQASetup: boolean = true) => {
     if (!avatar.current) return;
 
     try {
@@ -251,7 +251,7 @@ export default function InteractiveAvatar({
       if (includeQA) {
         setDebug("[Q&A Flow] Starting Q&A permission sequence");
         
-        // Ensure voice chat is disabled
+        // Ensure voice chat is disabled before permission message
         await avatar.current?.closeVoiceChat();
         setDebug("[Q&A Flow] Voice chat explicitly disabled before permission message");
         
@@ -264,10 +264,10 @@ export default function InteractiveAvatar({
         });
         setDebug("[Q&A Flow] Permission message completed");
         
-        // Brief pause after message
-        setDebug("[Q&A Flow] Starting post-message pause");
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        setDebug("[Q&A Flow] Post-message pause completed");
+        // Important pause to ensure the message is fully delivered
+        setDebug("[Q&A Flow] Starting post-permission-message pause");
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        setDebug("[Q&A Flow] Post-permission-message pause completed");
         
         // Now handle microphone permissions
         setDebug("[Q&A Flow] Beginning microphone permission sequence");
