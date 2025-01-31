@@ -45,7 +45,6 @@ export default function InteractiveAvatar({
   const [debug, setDebug] = useState<string>("");
   
   const logDebug = (message: string) => {
-    console.log(message);
     setDebug(message);
   };
   const knowledgeId = "046b4e319f334715a246e6b9977e42ca";
@@ -320,12 +319,10 @@ export default function InteractiveAvatar({
           logDebug("[Q&A Flow] Q&A interaction started");
         } catch (error) {
           logDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
-          console.error("[Q&A Flow] Microphone setup error:", error);
         }
       }
     } catch (error) {
       logDebug(`Error playing outro script: ${error}`);
-      console.error("Outro script error:", error);
     }
   };
 
