@@ -78,9 +78,7 @@ export default function InteractiveAvatar({
       token: newToken,
     });
 
-    // Initialize with custom script if provided
-    const initialGreeting = initialScript || 
-      "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.";
+    // Set up event listeners
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
       setDebug("Avatar started talking");
     });
@@ -143,8 +141,6 @@ export default function InteractiveAvatar({
         await playOutroScript();
       }
 
-      // Set to text mode by default
-      setChatMode("text_mode");
     } catch (error) {
       setDebug(`Error starting avatar session: ${error}`);
     } finally {
@@ -209,6 +205,34 @@ export default function InteractiveAvatar({
     }
   }, [mediaStream, stream]);
 
+
+  // Function to play the complete script sequence
+  const playCompleteScript = async (initialGreeting: string) => {
+    if (!avatar.current) return;
+
+    try {
+      // Play initial greeting
+      await avatar.current.speak({
+        text: initialGreeting,
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+
+      // Play demo script
+      await avatar.current.speak({
+        text: DEMO_PLAYER_SCRIPT,
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+
+      // Play outro if provided
+      if (outroScript) {
+        await playOutroScript();
+      }
+    } catch (error) {
+      setDebug(`Error playing complete script: ${error}`);
+    }
+  };
 
   // Function to play outro script and handle Q&A setup
   const playOutroScript = async () => {
