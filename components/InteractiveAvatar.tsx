@@ -249,19 +249,6 @@ export default function InteractiveAvatar({
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <div className="flex flex-col items-center mb-8">
-        <h2 className="text-2xl font-bold mb-4">Create Custom Demo</h2>
-        <DemoCustomizationForm 
-          onSubmit={handleDemoGeneration}
-          isLoading={isGeneratingDemo}
-        />
-        {demoConfig?.demoUrl && (
-          <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-            <p className="font-semibold">Demo URL:</p>
-            <p className="text-blue-600">{demoConfig.demoUrl}</p>
-          </div>
-        )}
-      </div>
       <div className="flex justify-center w-full py-8">
         <div className="relative w-[280px] h-[580px] bg-white rounded-[35px] shadow-xl border-[10px] border-black overflow-hidden">
           {/* iPhone Notch */}

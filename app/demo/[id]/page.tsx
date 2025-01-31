@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { Card, Input, Button, Spinner } from "@nextui-org/react";
 import InteractiveAvatar from "@/components/InteractiveAvatar";
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
 
 interface DemoConfig {
   customerName: string;
@@ -98,16 +100,22 @@ export default function DemoPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="p-6">
-        <h1 className="text-2xl font-bold mb-4">
-          Demo for {demoConfig.customerName}
-        </h1>
-        <InteractiveAvatar 
-          initialScript={demoConfig.introScript}
-          outroScript={demoConfig.outroScript}
-        />
-      </Card>
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <Hero />
+      <section id="interactive" className="w-full py-16 bg-[hsl(221.54,100%,97.45%)]">
+        <div className="container mx-auto px-4">
+          <Card className="p-6">
+            <h1 className="text-2xl font-bold mb-4">
+              Demo for {demoConfig.customerName}
+            </h1>
+            <InteractiveAvatar 
+              initialScript={demoConfig.introScript}
+              outroScript={demoConfig.outroScript}
+            />
+          </Card>
+        </div>
+      </section>
     </div>
   );
 }
