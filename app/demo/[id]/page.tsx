@@ -113,6 +113,7 @@ export default function DemoPage({ params }: { params: { id: string } }) {
             <InteractiveAvatar 
               initialScript={demoConfig.introScript}
               outroScript={demoConfig.outroScript}
+              includeQA={demoConfig.includeQA}
             />
           </Card>
         </div>

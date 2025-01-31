@@ -31,11 +31,13 @@ import { STT_LANGUAGE_LIST } from "@/app/lib/constants";
 interface InteractiveAvatarProps {
   initialScript?: string;
   outroScript?: string;
+  includeQA?: boolean;
 }
 
 export default function InteractiveAvatar({
   initialScript,
-  outroScript 
+  outroScript,
+  includeQA = false
 }: InteractiveAvatarProps) {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
@@ -207,7 +209,7 @@ export default function InteractiveAvatar({
       });
 
       // If Q&A is enabled, prompt for microphone permissions
-      if (demoConfig?.includeQA) {
+      if (includeQA) {
         await avatar.current.speak({
           text: "Next, you will be prompted to accept microphone permissions so that we can have a live conversation and answer any questions you may have.",
           taskType: TaskType.REPEAT,
@@ -291,7 +293,7 @@ export default function InteractiveAvatar({
           </CardBody>
           <Divider />
             <CardFooter className="flex flex-col gap-3 relative border-t">
-              {demoConfig?.includeQA && (
+              {includeQA && (
                 <Tabs
                   aria-label="Options"
                   selectedKey={chatMode}
@@ -333,7 +335,7 @@ export default function InteractiveAvatar({
             </CardFooter>
           </Card>
           <div className="flex justify-center gap-4 mt-4">
-            {demoConfig.includeQA && (
+            {includeQA && (
               <QAButton
                 isDisabled={!stream}
                 onStartQA={async () => {
