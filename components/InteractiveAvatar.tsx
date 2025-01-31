@@ -1,5 +1,6 @@
 import type { StartAvatarResponse } from "@heygen/streaming-avatar";
 import QAButton from "./QAButton";
+import { DEMO_PLAYER_SCRIPT, QA_PERMISSION_SCRIPT } from "@/app/lib/demoScripts";
 
 import StreamingAvatar, {
   AvatarQuality,
@@ -123,12 +124,24 @@ export default function InteractiveAvatar({
 
       setData(res);
 
-      // Add the greeting after session creation
+      // Play initial greeting
       await avatar.current?.speak({
         text: initialGreeting,
         taskType: TaskType.REPEAT,
         taskMode: TaskMode.SYNC
       });
+
+      // Play demo script
+      await avatar.current?.speak({
+        text: DEMO_PLAYER_SCRIPT,
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+
+      // Play outro if provided
+      if (outroScript) {
+        await playOutroScript();
+      }
 
       // Set to text mode by default
       setChatMode("text_mode");
@@ -211,7 +224,7 @@ export default function InteractiveAvatar({
       // If Q&A is enabled, prompt for microphone permissions
       if (includeQA) {
         await avatar.current.speak({
-          text: "Next, you will be prompted to accept microphone permissions so that we can have a live conversation and answer any questions you may have.",
+          text: QA_PERMISSION_SCRIPT,
           taskType: TaskType.REPEAT,
           taskMode: TaskMode.SYNC
         });
