@@ -31,7 +31,6 @@ export default function Home() {
         throw new Error(data.message || 'Invalid demo response');
       }
       router.push(`/demo/${data.demoId}`);
-    }
     } catch (error) {
       alert(error instanceof Error ? error.message : 'Failed to generate demo');
     }
