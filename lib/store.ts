@@ -3,6 +3,7 @@ interface Demo {
   customerName: string;
   introScript: string;
   outroScript: string;
+  includeQA: boolean;
   password?: string;
   createdAt: Date;
   updatedAt: Date;
