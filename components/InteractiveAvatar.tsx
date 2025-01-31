@@ -430,7 +430,7 @@ export default function InteractiveAvatar({
                 className="bg-black text-white hover:bg-gray-900"
                 size="lg"
                 isDisabled={!stream}
-                onClick={playOutroScript}
+                onClick={() => playOutroScript()}
               >
                 Play Closing Message
               </Button>
