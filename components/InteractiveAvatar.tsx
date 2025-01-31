@@ -122,24 +122,15 @@ export default function InteractiveAvatar({
 
       setData(res);
 
-      // Play initial greeting
-      await avatar.current?.speak({
-        text: initialGreeting,
-        taskType: TaskType.REPEAT,
-        taskMode: TaskMode.SYNC
-      });
+      // Initialize with custom script if provided
+      const initialGreeting = initialScript || 
+        "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.";
 
-      // Play demo script
-      await avatar.current?.speak({
-        text: DEMO_PLAYER_SCRIPT,
-        taskType: TaskType.REPEAT,
-        taskMode: TaskMode.SYNC
-      });
+      // Set initial chat mode
+      setChatMode("text_mode");
 
-      // Play outro if provided
-      if (outroScript) {
-        await playOutroScript();
-      }
+      // Play the complete script sequence
+      await playCompleteScript(initialGreeting);
 
     } catch (error) {
       setDebug(`Error starting avatar session: ${error}`);
