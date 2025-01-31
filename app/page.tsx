@@ -22,15 +22,18 @@ export default function Home() {
         body: JSON.stringify(formData),
       });
       
+      if (!response.ok) {
+        throw new Error('Failed to generate demo');
+      }
+
       const data = await response.json();
-      if (data.success) {
+      if (data && data.demoId) {
         router.push(`/demo/${data.demoId}`);
       } else {
-        throw new Error(data.message);
+        throw new Error('Invalid demo response');
       }
     } catch (error) {
-      // Handle error appropriately, could add toast notification here
-      throw new Error('Failed to generate demo');
+      alert(error instanceof Error ? error.message : 'Failed to generate demo');
     }
   };
 
