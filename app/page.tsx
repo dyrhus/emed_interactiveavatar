@@ -11,6 +11,7 @@ export default function Home() {
     customerName: string;
     introScript: string;
     outroScript: string;
+    includeQA: boolean;
     password?: string;
   }) => {
     try {

@@ -4,12 +4,13 @@ import { store } from '@/lib/store';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { customerName, introScript, outroScript, password } = body;
+    const { customerName, introScript, outroScript, includeQA, password } = body;
     
     const demo = store.createDemo({
       customerName,
       introScript,
       outroScript,
+      includeQA,
       password
     });
 

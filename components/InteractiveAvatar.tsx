@@ -215,6 +215,7 @@ export default function InteractiveAvatar({
     if (!avatar.current || !outroScript) return;
     
     try {
+      // Play outro script
       await avatar.current.speak({
         text: outroScript,
         taskType: TaskType.REPEAT,
@@ -223,11 +224,18 @@ export default function InteractiveAvatar({
 
       // If Q&A is enabled, prompt for microphone permissions
       if (includeQA) {
+        // Small pause before Q&A message
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Play Q&A permission message
         await avatar.current.speak({
           text: QA_PERMISSION_SCRIPT,
           taskType: TaskType.REPEAT,
           taskMode: TaskMode.SYNC
         });
+        
+        // Small pause before initializing voice chat
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Initialize voice chat after permission message
         await avatar.current?.startVoiceChat({
