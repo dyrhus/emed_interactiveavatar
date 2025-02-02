@@ -110,17 +110,14 @@ export default function InteractiveAvatar({
     });
 
     // Set up event listeners
-    avatar.current.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (message) => {
+    avatar.current.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (event) => {
       const timestamp = new Date().toISOString();
       
-      // Extract message content - handle both string and object formats
-      const messageContent = typeof message === 'string' ? message :
-                           message?.detail?.text || 
-                           message?.text?.value || 
-                           message?.text || 
-                           JSON.stringify(message);
+      // Extract message content from the event
+      const messageData = event?.data || event?.detail?.data;
+      const messageContent = messageData?.text || messageData?.message || '';
       
-      logDebug(`[${timestamp}] Raw message content: ${JSON.stringify(message)}`);
+      logDebug(`[${timestamp}] Raw message data: ${JSON.stringify(messageData)}`);
       
       // Detect current script based on content
       if (messageContent.includes(initialScript || "Hi, my name is Emmy")) {
@@ -138,7 +135,9 @@ export default function InteractiveAvatar({
         logDebug(`[${timestamp}] Detected QA Permission Script`);
       }
       
-      logDebug(`[${timestamp}] Avatar message: ${messageContent}`);
+      if (messageContent) {
+        logDebug(`[${timestamp}] Avatar message: ${messageContent}`);
+      }
     });
 
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
