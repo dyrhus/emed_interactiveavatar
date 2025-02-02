@@ -68,9 +68,8 @@ export default function InteractiveAvatar({
       stream.getTracks().forEach(track => track.stop());
       setDebug("[Q&A Flow] Microphone access granted");
       
-      // Hide the activation button and show listening indicator
+      // Hide the activation button
       setShowQAButton(false);
-      setIsVoiceChatActive(true);
       
       // Start Q&A
       await avatar.current?.speak({
@@ -124,9 +123,11 @@ export default function InteractiveAvatar({
     });
     avatar.current?.on(StreamingEvents.USER_START, () => {
       setDebug("User started talking");
+      setIsVoiceChatActive(true);
     });
     avatar.current?.on(StreamingEvents.USER_STOP, () => {
       setDebug("User stopped talking");
+      setIsVoiceChatActive(false);
     });
     try {
       const res = await avatar.current.createStartAvatar({
