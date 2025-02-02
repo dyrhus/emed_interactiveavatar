@@ -122,8 +122,8 @@ export default function InteractiveAvatar({
       const message = `[${timestamp}] Avatar started talking ${count}${currentScript ? `: ${currentScript}` : ''}`;
       logDebug(message);
       
-      // Show Q&A button only when QA Permission Script starts and we're at the right event
-      if (currentScript === "QA Permission Script" && count === 7) {
+      // Show Q&A button only when we reach event 7
+      if (count === 7) {
         setShowQAButton(true);
       }
     });
