@@ -119,43 +119,12 @@ export default function InteractiveAvatar({
     avatar.current.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (message) => {
       const timestamp = new Date().toISOString();
       const count = getNextEventCount();
-      
-      // Log the raw message for debugging
-      logDebug(`[${timestamp}] Raw message: ${JSON.stringify(message)}`);
-      
-      // Safely extract the text content
-      const messageText = typeof message === 'string' ? message : 
-                         message?.detail?.text || 
-                         message?.text || 
-                         JSON.stringify(message);
-      
-      // Detect which script is being read based on content
-      let detectedScript = "";
-      if (messageText.includes("Hi, my name is Emmy")) {
-        detectedScript = "Initial Greeting";
-      } else if (messageText.includes("Let me walk you through")) {
-        detectedScript = "Demo Player Script";
-      } else if (messageText.includes("I can switch to interactive Q&A mode")) {
-        detectedScript = "QA Permission Script";
-        // Show Q&A button when we reach the permission script
-        setShowQAButton(true);
-      }
-      
-      if (detectedScript) {
-        setCurrentScript(detectedScript);
-      }
-      
-      const logMessage = `[${timestamp}] Avatar message ${count}${detectedScript ? ` (${detectedScript})` : ''}: ${messageText}`;
-      logDebug(logMessage);
+      logDebug(`[${timestamp}] Avatar talking message ${count} (${currentScript})`);
     });
 
     avatar.current.on(StreamingEvents.AVATAR_END_MESSAGE, (message) => {
       const timestamp = new Date().toISOString();
-      const messageText = typeof message === 'string' ? message :
-                         message?.detail?.text ||
-                         message?.text ||
-                         JSON.stringify(message);
-      logDebug(`[${timestamp}] Avatar finished message: ${messageText}`);
+      logDebug(`[${timestamp}] Avatar finished message (${currentScript})`);
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
       setDebug("Stream disconnected");
@@ -224,38 +193,40 @@ export default function InteractiveAvatar({
   }, [mediaStream, stream]);
 
 
+  // Function to speak with script tracking
+  const speakWithTracking = async (text: string, scriptName: string) => {
+    if (!avatar.current) return;
+    
+    setCurrentScript(scriptName);
+    setDebug(`[Script Flow] Playing ${scriptName}`);
+    
+    try {
+      await avatar.current.speak({
+        text,
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+      setDebug(`[Script Flow] ${scriptName} completed`);
+    } catch (error) {
+      setDebug(`[Script Flow] Error in ${scriptName}: ${error}`);
+      throw error; // Propagate error to caller
+    }
+  };
+
   // Function to play the complete script sequence
   const playCompleteScript = async (initialGreeting: string) => {
     if (!avatar.current) return;
 
     try {
-      setCurrentScript("Intro Script");
-      setDebug("[Script Flow] Playing initial greeting");
-      await avatar.current.speak({
-        text: initialGreeting,
-        taskType: TaskType.REPEAT,
-        taskMode: TaskMode.SYNC
-      });
+      // Play initial greeting
+      await speakWithTracking(initialGreeting, "Intro Script");
 
-      setCurrentScript("Demo Player Script");
-      setDebug("[Script Flow] Playing demo script");
-      await avatar.current.speak({
-        text: DEMO_PLAYER_SCRIPT,
-        taskType: TaskType.REPEAT,
-        taskMode: TaskMode.SYNC
-      });
-      setDebug("[Script Flow] Demo script completed");
+      // Play demo script
+      await speakWithTracking(DEMO_PLAYER_SCRIPT, "Demo Player Script");
 
       // Play outro if provided
       if (outroScript) {
-        setCurrentScript("Outro Script");
-        setDebug("[Script Flow] Starting outro sequence");
-        await avatar.current.speak({
-          text: outroScript,
-          taskType: TaskType.REPEAT,
-          taskMode: TaskMode.SYNC
-        });
-        setDebug("[Script Flow] Outro script completed");
+        await speakWithTracking(outroScript, "Outro Script");
 
         // If Q&A is enabled, start Q&A setup
         if (includeQA) {
@@ -265,13 +236,7 @@ export default function InteractiveAvatar({
             setDebug("[Q&A Flow] Brief pause completed");
             
             // Play permission message
-            setDebug("[Q&A Flow] Playing permission message");
-            setCurrentScript("QA Permission Script");
-            await avatar.current.speak({
-              text: QA_PERMISSION_SCRIPT,
-              taskType: TaskType.REPEAT,
-              taskMode: TaskMode.SYNC
-            });
+            await speakWithTracking(QA_PERMISSION_SCRIPT, "QA Permission Script");
           } catch (error) {
             setDebug(`[Q&A Flow] Error during Q&A setup: ${error}`);
           }
