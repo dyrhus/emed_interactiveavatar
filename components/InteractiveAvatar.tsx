@@ -107,11 +107,15 @@ export default function InteractiveAvatar({
 
     // Set up event listeners
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
-      setDebug("Avatar started talking");
+      const timestamp = new Date().toISOString();
+      setDebug(`[${timestamp}] Avatar started talking`);
+      console.log(`[${timestamp}] Avatar started talking`);
     });
 
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
-      setDebug("Avatar stopped talking");
+      const timestamp = new Date().toISOString();
+      setDebug(`[${timestamp}] Avatar stopped talking`);
+      console.log(`[${timestamp}] Avatar stopped talking`);
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
       setDebug("Stream disconnected");
