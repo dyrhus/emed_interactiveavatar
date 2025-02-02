@@ -122,6 +122,11 @@ export default function InteractiveAvatar({
       incrementEventCounter();
       const message = `[${timestamp}] Avatar started talking ${eventCounter + 1}${currentScript ? `: ${currentScript}` : ''}`;
       logDebug(message);
+      
+      // Show Q&A button only when QA Permission Script starts (event 7)
+      if (currentScript === "QA Permission Script") {
+        setShowQAButton(true);
+      }
     });
 
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
@@ -246,13 +251,6 @@ export default function InteractiveAvatar({
             avatar.current.on(StreamingEvents.AVATAR_START_TALKING, handleSpeechStart);
             
             setCurrentScript("QA Permission Script");
-            // Show Q&A button when this specific script starts
-            avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
-              if (eventCounter === 6) { // Will be 7 after increment
-                setShowQAButton(true);
-              }
-            });
-            
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
