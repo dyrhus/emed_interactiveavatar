@@ -154,8 +154,7 @@ export default function InteractiveAvatar({
 
       // Ensure voice chat is disabled initially
       await avatar.current?.closeVoiceChat();
-      setChatMode("text_mode");
-      logDebug("[Session Start] Voice chat disabled, text mode active");
+      logDebug("[Session Start] Voice chat disabled");
 
       // Play the complete script sequence
       await playCompleteScript(initialGreeting);
