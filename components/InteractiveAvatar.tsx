@@ -278,6 +278,13 @@ export default function InteractiveAvatar({
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[20px] w-[100px] bg-black rounded-b-[15px] z-10"></div>
           
           <Card className="w-full h-full rounded-none">
+            {currentScript && (
+              <div className="absolute top-2 left-2 z-10">
+                <span className="text-xs bg-black/50 text-white px-2 py-1 rounded">
+                  {currentScript}
+                </span>
+              </div>
+            )}
             <CardBody className="p-0 flex flex-col">
               {stream ? (
                 <div className="w-full h-[480px] justify-center items-center flex overflow-hidden">
