@@ -17,12 +17,10 @@ import {
   Select,
   SelectItem,
   Spinner,
-  Chip,
-  Tabs,
-  Tab,
 } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, usePrevious } from "ahooks";
+import Image from "next/image";
 
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
