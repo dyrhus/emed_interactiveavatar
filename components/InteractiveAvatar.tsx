@@ -239,7 +239,6 @@ export default function InteractiveAvatar({
             setShowQAButton(true);
           } catch (error) {
             setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
-            setChatMode("text_mode");
           }
         }
       }
