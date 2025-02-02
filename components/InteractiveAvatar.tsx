@@ -38,9 +38,15 @@ export default function InteractiveAvatar({
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>("");
+  const [eventCounter, setEventCounter] = useState(0);
+  const [currentScript, setCurrentScript] = useState<string>("");
   
   const logDebug = (message: string) => {
     setDebug(message);
+  };
+
+  const incrementEventCounter = () => {
+    setEventCounter(prev => prev + 1);
   };
   const knowledgeId = "046b4e319f334715a246e6b9977e42ca";
   const avatarId = "Elenora_FitnessCoach_public";
@@ -108,14 +114,18 @@ export default function InteractiveAvatar({
     // Set up event listeners
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
       const timestamp = new Date().toISOString();
-      setDebug(`[${timestamp}] Avatar started talking`);
-      console.log(`[${timestamp}] Avatar started talking`);
+      incrementEventCounter();
+      const message = `[${timestamp}] Avatar started talking ${eventCounter + 1}${currentScript ? `: ${currentScript}` : ''}`;
+      setDebug(message);
+      console.log(message);
     });
 
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
       const timestamp = new Date().toISOString();
-      setDebug(`[${timestamp}] Avatar stopped talking`);
-      console.log(`[${timestamp}] Avatar stopped talking`);
+      incrementEventCounter();
+      const message = `[${timestamp}] Avatar stopped talking ${eventCounter + 1}`;
+      setDebug(message);
+      console.log(message);
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
       setDebug("Stream disconnected");
@@ -189,7 +199,7 @@ export default function InteractiveAvatar({
     if (!avatar.current) return;
 
     try {
-      // Play initial greeting
+      setCurrentScript("Intro Script");
       setDebug("[Script Flow] Playing initial greeting");
       await avatar.current.speak({
         text: initialGreeting,
@@ -197,7 +207,7 @@ export default function InteractiveAvatar({
         taskMode: TaskMode.SYNC
       });
 
-      // Play demo script
+      setCurrentScript("Demo Player Script");
       setDebug("[Script Flow] Playing demo script");
       await avatar.current.speak({
         text: DEMO_PLAYER_SCRIPT,
@@ -208,6 +218,7 @@ export default function InteractiveAvatar({
 
       // Play outro if provided
       if (outroScript) {
+        setCurrentScript("Outro Script");
         setDebug("[Script Flow] Starting outro sequence");
         await avatar.current.speak({
           text: outroScript,
@@ -231,6 +242,7 @@ export default function InteractiveAvatar({
             };
             avatar.current.on(StreamingEvents.AVATAR_START_TALKING, handleSpeechStart);
             
+            setCurrentScript("QA Permission Script");
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
