@@ -79,7 +79,6 @@ export default function InteractiveAvatar({
       });
     } catch (error) {
       setDebug(`[Q&A Flow] Error during setup: ${error}`);
-      setChatMode("text_mode");
     }
   };
 
