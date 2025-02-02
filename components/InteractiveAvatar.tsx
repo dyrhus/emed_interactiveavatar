@@ -22,7 +22,6 @@ import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, usePrevious } from "ahooks";
 import Image from "next/image";
 
-import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 import { STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
