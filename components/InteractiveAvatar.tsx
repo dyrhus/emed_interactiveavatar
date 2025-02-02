@@ -49,7 +49,6 @@ export default function InteractiveAvatar({
   const [, setData] = useState<StartAvatarResponse>();
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
-  const [chatMode, setChatMode] = useState<"text_mode" | "voice_mode">("text_mode");
   const [showQAButton, setShowQAButton] = useState(false);
 
   const activateQA = async () => {
@@ -67,8 +66,6 @@ export default function InteractiveAvatar({
       stream.getTracks().forEach(track => track.stop());
       setDebug("[Q&A Flow] Microphone access granted");
       
-      // Enable voice mode
-      setChatMode("voice_mode");
       setDebug("[Q&A Flow] Voice chat mode enabled");
       
       // Hide the activation button
