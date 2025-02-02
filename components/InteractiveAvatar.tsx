@@ -42,12 +42,9 @@ export default function InteractiveAvatar({
   const [currentScript, setCurrentScript] = useState<string>("");
   
   const logDebug = (message: string) => {
-    setDebug(message);
-    // Only log in development
-    if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
-      console.log(message);
-    }
+    setDebug(prev => prev + '\n' + message);
+    // eslint-disable-next-line no-console
+    console.log(message);
   };
 
   const incrementEventCounter = () => {
@@ -363,11 +360,12 @@ export default function InteractiveAvatar({
               </div>
             </CardFooter>
           </Card>
-          <p className="font-mono text-right">
-            <span className="font-bold">Console:</span>
-            <br />
-            {debug}
-          </p>
+          <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+            <p className="font-bold mb-2">Avatar Speech Events:</p>
+            <div className="font-mono text-sm h-40 overflow-y-auto">
+              {debug}
+            </div>
+          </div>
         </div>
       </div>
     </div>
