@@ -47,6 +47,11 @@ export default function InteractiveAvatar({
     console.log(message);
   };
 
+  const getNextEventCount = () => {
+    setEventCounter(prev => prev + 1);
+    return eventCounter + 1;
+  };
+
   const knowledgeId = "046b4e319f334715a246e6b9977e42ca";
   const avatarId = "Elenora_FitnessCoach_public";
   const [language, setLanguage] = useState<string>("en");
@@ -112,25 +117,22 @@ export default function InteractiveAvatar({
 
     // Set up event listeners
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
-      const nextCount = eventCounter + 1;
       const timestamp = new Date().toISOString();
-      const message = `[${timestamp}] Avatar started talking ${nextCount}${currentScript ? `: ${currentScript}` : ''}`;
+      const count = getNextEventCount();
+      const message = `[${timestamp}] Avatar started talking ${count}${currentScript ? `: ${currentScript}` : ''}`;
       logDebug(message);
       
       // Show Q&A button only when QA Permission Script starts
       if (currentScript === "QA Permission Script") {
         setShowQAButton(true);
       }
-      
-      setEventCounter(nextCount);
     });
 
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
-      const nextCount = eventCounter + 1;
       const timestamp = new Date().toISOString();
-      const message = `[${timestamp}] Avatar stopped talking ${nextCount}`;
+      const count = getNextEventCount();
+      const message = `[${timestamp}] Avatar stopped talking ${count}`;
       logDebug(message);
-      setEventCounter(nextCount);
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
       setDebug("Stream disconnected");
