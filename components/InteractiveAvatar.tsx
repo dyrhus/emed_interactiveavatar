@@ -50,6 +50,7 @@ export default function InteractiveAvatar({
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
   const [showQAButton, setShowQAButton] = useState(false);
+  const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
 
   const activateQA = async () => {
     try {
@@ -67,8 +68,9 @@ export default function InteractiveAvatar({
       stream.getTracks().forEach(track => track.stop());
       setDebug("[Q&A Flow] Microphone access granted");
       
-      // Hide the activation button
+      // Hide the activation button and show listening indicator
       setShowQAButton(false);
+      setIsVoiceChatActive(true);
       
       // Start Q&A
       await avatar.current?.speak({
@@ -315,6 +317,14 @@ export default function InteractiveAvatar({
                     variant="shadow"
                   >
                     Activate Q&A
+                  </Button>
+                ) : isVoiceChatActive ? (
+                  <Button
+                    className="bg-black text-white hover:bg-gray-900"
+                    size="md"
+                    variant="shadow"
+                  >
+                    Listening...
                   </Button>
                 ) : (
                   <Image
