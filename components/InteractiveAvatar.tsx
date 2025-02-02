@@ -118,14 +118,23 @@ export default function InteractiveAvatar({
     // Set up event listeners
     avatar.current.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (message) => {
       const timestamp = new Date().toISOString();
-      const count = getNextEventCount();
-      logDebug(`[${timestamp}] Avatar talking message ${count} (${currentScript})`);
+      const messageText = message?.text || '';
+      
+      // Detect current script based on content
+      if (messageText.includes(initialScript || "Hi, my name is Emmy")) {
+        setCurrentScript("Intro Script");
+      } else if (messageText.includes("Let me walk you through")) {
+        setCurrentScript("Demo Player Script");
+      } else if (outroScript && messageText.includes(outroScript)) {
+        setCurrentScript("Outro Script");
+      } else if (messageText.includes("I can switch to interactive Q&A mode")) {
+        setCurrentScript("QA Permission Script");
+        setShowQAButton(true);
+      }
+      
+      logDebug(`[${timestamp}] Avatar message: ${messageText}`);
     });
 
-    avatar.current.on(StreamingEvents.AVATAR_END_MESSAGE, (message) => {
-      const timestamp = new Date().toISOString();
-      logDebug(`[${timestamp}] Avatar finished message (${currentScript})`);
-    });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
       setDebug("Stream disconnected");
       endSession();
