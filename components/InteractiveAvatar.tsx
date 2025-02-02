@@ -53,13 +53,6 @@ export default function InteractiveAvatar({
 
   const activateQA = async () => {
     try {
-      setDebug("[Q&A Flow] Initializing voice chat capabilities");
-      await avatar.current?.closeVoiceChat();
-      await avatar.current?.startVoiceChat({
-        useSilencePrompt: false,
-      });
-      setDebug("[Q&A Flow] Voice chat capabilities initialized");
-      
       // Request microphone permissions
       setDebug("[Q&A Flow] Requesting microphone access");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -227,19 +220,24 @@ export default function InteractiveAvatar({
             await new Promise(resolve => setTimeout(resolve, 1000));
             setDebug("[Q&A Flow] Brief pause completed");
             
-            // Play permission message
-            setDebug("[Q&A Flow] Playing permission message");
-            await new Promise(resolve => {
-              // Set a small delay to let the script start
-              setTimeout(() => {
-                setShowQAButton(true);
-                resolve(null);
-              }, 500);
+            // Initialize voice chat capabilities first
+            setDebug("[Q&A Flow] Initializing voice chat capabilities");
+            await avatar.current.closeVoiceChat();
+            await avatar.current.startVoiceChat({
+              useSilencePrompt: false,
             });
+            setDebug("[Q&A Flow] Voice chat capabilities initialized");
+            
+            // Play permission message and show button
+            setDebug("[Q&A Flow] Playing permission message");
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
-              taskMode: TaskMode.SYNC
+              taskMode: TaskMode.SYNC,
+              onStart: () => {
+                // Show button when speech starts
+                setShowQAButton(true);
+              }
             });
           } catch (error) {
             setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
