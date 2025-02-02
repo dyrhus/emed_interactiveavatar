@@ -227,16 +227,14 @@ export default function InteractiveAvatar({
             await new Promise(resolve => setTimeout(resolve, 1000));
             setDebug("[Q&A Flow] Brief pause completed");
             
-            // Play permission message first
+            // Play permission message and show activation button
             setDebug("[Q&A Flow] Playing permission message");
+            setShowQAButton(true);
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
               taskMode: TaskMode.SYNC
             });
-
-            // Add a button for user to activate Q&A when ready
-            setShowQAButton(true);
           } catch (error) {
             setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
           }
