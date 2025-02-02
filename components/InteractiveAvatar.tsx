@@ -114,10 +114,9 @@ export default function InteractiveAvatar({
       const timestamp = new Date().toISOString();
       
       // Extract message content from the event
-      const messageData = event?.data || event?.detail?.data;
-      const messageContent = messageData?.text || messageData?.message || '';
+      const messageContent = event?.message || event?.detail?.message || '';
       
-      logDebug(`[${timestamp}] Raw message data: ${JSON.stringify(messageData)}`);
+      logDebug(`[${timestamp}] Raw message data: ${JSON.stringify(event)}`);
       
       // Detect current script based on content
       if (messageContent.includes(initialScript || "Hi, my name is Emmy")) {
