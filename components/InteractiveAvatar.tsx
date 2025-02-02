@@ -120,13 +120,22 @@ export default function InteractiveAvatar({
       const timestamp = new Date().toISOString();
       const count = getNextEventCount();
       
+      // Log the raw message for debugging
+      logDebug(`[${timestamp}] Raw message: ${JSON.stringify(message)}`);
+      
+      // Safely extract the text content
+      const messageText = typeof message === 'string' ? message : 
+                         message?.detail?.text || 
+                         message?.text || 
+                         JSON.stringify(message);
+      
       // Detect which script is being read based on content
       let detectedScript = "";
-      if (message.detail.includes("Hi, my name is Emmy")) {
+      if (messageText.includes("Hi, my name is Emmy")) {
         detectedScript = "Initial Greeting";
-      } else if (message.detail.includes("Let me walk you through")) {
+      } else if (messageText.includes("Let me walk you through")) {
         detectedScript = "Demo Player Script";
-      } else if (message.detail.includes("I can switch to interactive Q&A mode")) {
+      } else if (messageText.includes("I can switch to interactive Q&A mode")) {
         detectedScript = "QA Permission Script";
         // Show Q&A button when we reach the permission script
         setShowQAButton(true);
@@ -136,13 +145,17 @@ export default function InteractiveAvatar({
         setCurrentScript(detectedScript);
       }
       
-      const logMessage = `[${timestamp}] Avatar message ${count}${detectedScript ? ` (${detectedScript})` : ''}: ${message.detail}`;
+      const logMessage = `[${timestamp}] Avatar message ${count}${detectedScript ? ` (${detectedScript})` : ''}: ${messageText}`;
       logDebug(logMessage);
     });
 
     avatar.current.on(StreamingEvents.AVATAR_END_MESSAGE, (message) => {
       const timestamp = new Date().toISOString();
-      logDebug(`[${timestamp}] Avatar finished message: ${message.detail}`);
+      const messageText = typeof message === 'string' ? message :
+                         message?.detail?.text ||
+                         message?.text ||
+                         JSON.stringify(message);
+      logDebug(`[${timestamp}] Avatar finished message: ${messageText}`);
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
       setDebug("Stream disconnected");
