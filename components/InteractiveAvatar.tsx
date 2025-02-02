@@ -53,13 +53,19 @@ export default function InteractiveAvatar({
 
   const activateQA = async () => {
     try {
+      // Initialize voice chat capabilities
+      setDebug("[Q&A Flow] Initializing voice chat capabilities");
+      await avatar.current?.closeVoiceChat();
+      await avatar.current?.startVoiceChat({
+        useSilencePrompt: false,
+      });
+      setDebug("[Q&A Flow] Voice chat capabilities initialized");
+
       // Request microphone permissions
       setDebug("[Q&A Flow] Requesting microphone access");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach(track => track.stop());
       setDebug("[Q&A Flow] Microphone access granted");
-      
-      setDebug("[Q&A Flow] Voice chat mode enabled");
       
       // Hide the activation button
       setShowQAButton(false);
@@ -124,16 +130,10 @@ export default function InteractiveAvatar({
       const res = await avatar.current.createStartAvatar({
         quality: AvatarQuality.Low,
         avatarName: avatarId,
-        knowledgeId: knowledgeId, // Or use a custom `knowledgeBase`.
+        knowledgeId: knowledgeId,
         voice: {
-          rate: 1.5, // 0.5 ~ 1.5
+          rate: 1.5,
           emotion: VoiceEmotion.EXCITED,
-          // elevenlabsSettings: {
-          //   stability: 1,
-          //   similarity_boost: 1,
-          //   style: 1,
-          //   use_speaker_boost: false,
-          // },
         },
         language: language,
         disableIdleTimeout: true,
@@ -145,11 +145,7 @@ export default function InteractiveAvatar({
       const initialGreeting = initialScript || 
         "Hi, my name is Emmy, do you have any questions about eMed's Weightloss program? I'm here to help.";
 
-      // Ensure voice chat is disabled initially
-      await avatar.current?.closeVoiceChat();
-      logDebug("[Session Start] Voice chat disabled");
-
-      // Play the complete script sequence
+      logDebug("[Session Start] Starting script sequence");
       await playCompleteScript(initialGreeting);
 
     } catch (error) {
@@ -213,37 +209,28 @@ export default function InteractiveAvatar({
         });
         setDebug("[Script Flow] Outro script completed");
 
-        // If Q&A is enabled, handle the setup after outro
+        // If Q&A is enabled, start Q&A setup
         if (includeQA) {
           try {
             // Brief pause after outro
             await new Promise(resolve => setTimeout(resolve, 1000));
             setDebug("[Q&A Flow] Brief pause completed");
             
-            // Initialize voice chat capabilities first
-            setDebug("[Q&A Flow] Initializing voice chat capabilities");
-            await avatar.current.closeVoiceChat();
-            await avatar.current.startVoiceChat({
-              useSilencePrompt: false,
-            });
-            setDebug("[Q&A Flow] Voice chat capabilities initialized");
-            
-            // Set up event listener for speech start
+            // Play permission message and show button
+            setDebug("[Q&A Flow] Playing permission message");
             const handleSpeechStart = () => {
               setShowQAButton(true);
               avatar.current?.off(StreamingEvents.AVATAR_START_TALKING, handleSpeechStart);
             };
             avatar.current.on(StreamingEvents.AVATAR_START_TALKING, handleSpeechStart);
             
-            // Play permission message
-            setDebug("[Q&A Flow] Playing permission message");
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
               taskMode: TaskMode.SYNC
             });
           } catch (error) {
-            setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
+            setDebug(`[Q&A Flow] Error during Q&A setup: ${error}`);
           }
         }
       }
