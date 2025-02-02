@@ -116,23 +116,33 @@ export default function InteractiveAvatar({
     });
 
     // Set up event listeners
-    avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
+    avatar.current.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (message) => {
       const timestamp = new Date().toISOString();
       const count = getNextEventCount();
-      const message = `[${timestamp}] Avatar started talking ${count}${currentScript ? `: ${currentScript}` : ''}`;
-      logDebug(message);
       
-      // Show Q&A button only when we reach event 7
-      if (count === 7) {
+      // Detect which script is being read based on content
+      let detectedScript = "";
+      if (message.detail.includes("Hi, my name is Emmy")) {
+        detectedScript = "Initial Greeting";
+      } else if (message.detail.includes("Let me walk you through")) {
+        detectedScript = "Demo Player Script";
+      } else if (message.detail.includes("I can switch to interactive Q&A mode")) {
+        detectedScript = "QA Permission Script";
+        // Show Q&A button when we reach the permission script
         setShowQAButton(true);
       }
+      
+      if (detectedScript) {
+        setCurrentScript(detectedScript);
+      }
+      
+      const logMessage = `[${timestamp}] Avatar message ${count}${detectedScript ? ` (${detectedScript})` : ''}: ${message.detail}`;
+      logDebug(logMessage);
     });
 
-    avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
+    avatar.current.on(StreamingEvents.AVATAR_END_MESSAGE, (message) => {
       const timestamp = new Date().toISOString();
-      const count = getNextEventCount();
-      const message = `[${timestamp}] Avatar stopped talking ${count}`;
-      logDebug(message);
+      logDebug(`[${timestamp}] Avatar finished message: ${message.detail}`);
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
       setDebug("Stream disconnected");
