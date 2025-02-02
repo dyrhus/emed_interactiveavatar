@@ -38,7 +38,7 @@ export default function InteractiveAvatar({
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>("");
-  const [eventCounter, setEventCounter] = useState(0);
+  const eventCounter = useRef(0);
   const [currentScript, setCurrentScript] = useState<string>("");
   
   const logDebug = (message: string) => {
@@ -48,8 +48,8 @@ export default function InteractiveAvatar({
   };
 
   const getNextEventCount = () => {
-    setEventCounter(prev => prev + 1);
-    return eventCounter + 1;
+    eventCounter.current += 1;
+    return eventCounter.current;
   };
 
   const knowledgeId = "046b4e319f334715a246e6b9977e42ca";
@@ -122,8 +122,8 @@ export default function InteractiveAvatar({
       const message = `[${timestamp}] Avatar started talking ${count}${currentScript ? `: ${currentScript}` : ''}`;
       logDebug(message);
       
-      // Show Q&A button only when QA Permission Script starts
-      if (currentScript === "QA Permission Script") {
+      // Show Q&A button only when QA Permission Script starts and we're at the right event
+      if (currentScript === "QA Permission Script" && count === 7) {
         setShowQAButton(true);
       }
     });
