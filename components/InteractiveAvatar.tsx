@@ -365,18 +365,6 @@ export default function InteractiveAvatar({
           </CardBody>
           <Divider />
             <CardFooter className="flex flex-col gap-3 relative border-t">
-              {includeQA && (
-                <Tabs
-                  aria-label="Options"
-                  selectedKey={chatMode}
-                  onSelectionChange={(v) => {
-                    handleChangeChatMode(v);
-                  }}
-                >
-                  <Tab key="text_mode" title="Text mode" />
-                  <Tab key="voice_mode" title="Voice mode" />
-                </Tabs>
-              )}
               <div className="w-full flex justify-center items-center">
                 {showQAButton ? (
                   <Button
@@ -388,33 +376,12 @@ export default function InteractiveAvatar({
                     Activate Q&A
                   </Button>
                 ) : (
-                  <>
-                    {chatMode === "text_mode" ? (
-                      <div className="w-full flex relative">
-                        <InteractiveAvatarTextInput
-                          disabled={!stream}
-                          input={text}
-                          label="Chat"
-                          loading={isLoadingRepeat}
-                          placeholder="Type something for the avatar to respond"
-                          setInput={setText}
-                          onSubmit={handleSpeak}
-                        />
-                        {text && (
-                          <Chip className="absolute right-16 top-3">Listening</Chip>
-                        )}
-                      </div>
-                    ) : (
-                      <Button
-                        className="bg-black text-white hover:bg-gray-900"
-                        isDisabled={!isUserTalking}
-                        size="md"
-                        variant="shadow"
-                      >
-                        {isUserTalking ? "Listening" : "Voice chat"}
-                      </Button>
-                    )}
-                  </>
+                  <Image
+                    src="/eMed Logo 200x100.png"
+                    alt="eMed Logo"
+                    width={100}
+                    height={50}
+                  />
                 )}
               </div>
             </CardFooter>
