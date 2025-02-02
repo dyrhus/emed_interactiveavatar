@@ -1,4 +1,5 @@
 import { Button, Input, Textarea } from "@nextui-org/react";
+import { logger } from '@/app/lib/logger';
 import { useState } from "react";
 
 interface DemoFormData {
@@ -24,7 +25,7 @@ export default function DemoCustomizationForm({ onSubmit, isLoading }: DemoCusto
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('[DemoForm] Submitting form data:', formData);
+    logger.log('[DemoForm] Submitting form data:', formData);
     onSubmit(formData);
   };
 

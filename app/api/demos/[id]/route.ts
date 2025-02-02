@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
+import { logger } from '@/app/lib/logger';
 import { store } from '@/lib/store';
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  console.log('[API] Fetching demo with ID:', params.id);
+  logger.log('[API] Fetching demo with ID:', params.id);
   try {
     const demo = store.getDemo(params.id);
 

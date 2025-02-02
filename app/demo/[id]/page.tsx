@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { logger } from '@/app/lib/logger';
 import { Card, Input, Button, Spinner } from "@nextui-org/react";
 import InteractiveAvatar from "@/components/InteractiveAvatar";
 import Header from "@/components/Header";
@@ -23,7 +24,7 @@ export default function DemoPage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     const fetchDemoConfig = async () => {
-      console.log('[DemoPage] Fetching demo config for ID:', params.id);
+      logger.log('[DemoPage] Fetching demo config for ID:', params.id);
       try {
         const response = await fetch(`/api/demos/${params.id}`);
         if (!response.ok) throw new Error("Demo not found");
@@ -41,7 +42,7 @@ export default function DemoPage({ params }: { params: { id: string } }) {
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('[DemoPage] Attempting password verification');
+    logger.log('[DemoPage] Attempting password verification');
     try {
       const response = await fetch(`/api/demos/${params.id}/verify`, {
         method: "POST",

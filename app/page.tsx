@@ -1,6 +1,7 @@
 "use client";
 
 import DemoCustomizationForm from "@/components/DemoCustomizationForm";
+import { logger } from '@/app/lib/logger';
 import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
 
@@ -15,7 +16,7 @@ export default function Home() {
     password?: string;
   }) => {
     try {
-      console.log('[Home] Generating demo with config:', formData);
+      logger.log('[Home] Generating demo with config:', formData);
       const response = await fetch('/api/generate-demo', {
         method: 'POST',
         headers: {
