@@ -112,21 +112,33 @@ export default function InteractiveAvatar({
     // Set up event listeners
     avatar.current.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (message) => {
       const timestamp = new Date().toISOString();
-      const messageText = message?.text || '';
+      
+      // Extract message content - handle both string and object formats
+      const messageContent = typeof message === 'string' ? message :
+                           message?.detail?.text || 
+                           message?.text?.value || 
+                           message?.text || 
+                           JSON.stringify(message);
+      
+      logDebug(`[${timestamp}] Raw message content: ${JSON.stringify(message)}`);
       
       // Detect current script based on content
-      if (messageText.includes(initialScript || "Hi, my name is Emmy")) {
+      if (messageContent.includes(initialScript || "Hi, my name is Emmy")) {
         setCurrentScript("Intro Script");
-      } else if (messageText.includes("Let me walk you through")) {
+        logDebug(`[${timestamp}] Detected Intro Script`);
+      } else if (messageContent.includes("Let me walk you through")) {
         setCurrentScript("Demo Player Script");
-      } else if (outroScript && messageText.includes(outroScript)) {
+        logDebug(`[${timestamp}] Detected Demo Player Script`);
+      } else if (outroScript && messageContent.includes(outroScript)) {
         setCurrentScript("Outro Script");
-      } else if (messageText.includes("I can switch to interactive Q&A mode")) {
+        logDebug(`[${timestamp}] Detected Outro Script`);
+      } else if (messageContent.includes("I can switch to interactive Q&A mode")) {
         setCurrentScript("QA Permission Script");
         setShowQAButton(true);
+        logDebug(`[${timestamp}] Detected QA Permission Script`);
       }
       
-      logDebug(`[${timestamp}] Avatar message: ${messageText}`);
+      logDebug(`[${timestamp}] Avatar message: ${messageContent}`);
     });
 
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
