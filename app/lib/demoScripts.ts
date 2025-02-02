@@ -6,4 +6,4 @@ Let me show you how quick the onboarding process is. First, employees complete a
 
 That's it. Once approved, eMed tracks adherence to ensure the program is effective and to avoid waste and abuse. Here's an example of the weekly check-in process: Employees simply log their weight, any side effects, and confirm they're taking their medication as prescribed. This helps us ensure the program is working effectively for each participant.`;
 
-export const QA_PERMISSION_SCRIPT = "Thank you for granting microphone access. Now we can proceed with our live conversation where I'll be happy to answer any questions you may have.";
+export const QA_PERMISSION_SCRIPT = "I can switch to interactive Q&A mode where we can have a live voice conversation. Click the 'Activate Q&A' button below when you're ready to start, and I'll help you get set up with voice chat.";

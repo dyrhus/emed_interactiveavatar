@@ -57,6 +57,41 @@ export default function InteractiveAvatar({
   const avatar = useRef<StreamingAvatar | null>(null);
   const [chatMode, setChatMode] = useState("text_mode");
   const [isUserTalking, setIsUserTalking] = useState(false);
+  const [showQAButton, setShowQAButton] = useState(false);
+
+  const activateQA = async () => {
+    try {
+      setDebug("[Q&A Flow] Initializing voice chat capabilities");
+      await avatar.current?.closeVoiceChat();
+      await avatar.current?.startVoiceChat({
+        useSilencePrompt: false,
+      });
+      setDebug("[Q&A Flow] Voice chat capabilities initialized");
+      
+      // Request microphone permissions
+      setDebug("[Q&A Flow] Requesting microphone access");
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(track => track.stop());
+      setDebug("[Q&A Flow] Microphone access granted");
+      
+      // Enable voice mode
+      setChatMode("voice_mode");
+      setDebug("[Q&A Flow] Voice chat mode enabled");
+      
+      // Hide the activation button
+      setShowQAButton(false);
+      
+      // Start Q&A
+      await avatar.current?.speak({
+        text: "Great! Now that we have voice chat set up, I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+    } catch (error) {
+      setDebug(`[Q&A Flow] Error during setup: ${error}`);
+      setChatMode("text_mode");
+    }
+  };
 
   async function fetchAccessToken() {
     try {
@@ -250,30 +285,8 @@ export default function InteractiveAvatar({
               taskMode: TaskMode.SYNC
             });
 
-            // Initialize voice chat capabilities
-            setDebug("[Q&A Flow] Initializing voice chat capabilities");
-            await avatar.current.closeVoiceChat();
-            await avatar.current.startVoiceChat({
-              useSilencePrompt: false,
-            });
-            setDebug("[Q&A Flow] Voice chat capabilities initialized");
-            
-            // Request microphone permissions
-            setDebug("[Q&A Flow] Requesting microphone access");
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            stream.getTracks().forEach(track => track.stop());
-            setDebug("[Q&A Flow] Microphone access granted");
-            
-            // Enable voice mode
-            setChatMode("voice_mode");
-            setDebug("[Q&A Flow] Voice chat mode enabled");
-            
-            // Start Q&A
-            await avatar.current.speak({
-              text: "Great! Now that we have voice chat set up, I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
-              taskType: TaskType.REPEAT,
-              taskMode: TaskMode.SYNC
-            });
+            // Add a button for user to activate Q&A when ready
+            setShowQAButton(true);
           } catch (error) {
             setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
             setChatMode("text_mode");
@@ -381,14 +394,25 @@ export default function InteractiveAvatar({
                 </div>
               ) : (
                 <div className="w-full flex justify-center items-center">
-                  <Button
-                    className="bg-black text-white hover:bg-gray-900"
-                    isDisabled={!isUserTalking}
-                    size="md"
-                    variant="shadow"
-                  >
-                    {isUserTalking ? "Listening" : "Voice chat"}
-                  </Button>
+                  {showQAButton ? (
+                    <Button
+                      className="bg-black text-white hover:bg-gray-900"
+                      onClick={activateQA}
+                      size="md"
+                      variant="shadow"
+                    >
+                      Activate Q&A
+                    </Button>
+                  ) : (
+                    <Button
+                      className="bg-black text-white hover:bg-gray-900"
+                      isDisabled={!isUserTalking}
+                      size="md"
+                      variant="shadow"
+                    >
+                      {isUserTalking ? "Listening" : "Voice chat"}
+                    </Button>
+                  )}
                 </div>
               )}
             </CardFooter>
