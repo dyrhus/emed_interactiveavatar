@@ -123,11 +123,9 @@ export default function InteractiveAvatar({
     });
     avatar.current?.on(StreamingEvents.USER_START, () => {
       setDebug("User started talking");
-      setIsUserTalking(true);
     });
     avatar.current?.on(StreamingEvents.USER_STOP, () => {
       setDebug("User stopped talking");
-      setIsUserTalking(false);
     });
     try {
       const res = await avatar.current.createStartAvatar({
