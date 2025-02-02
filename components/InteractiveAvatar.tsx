@@ -49,7 +49,7 @@ export default function InteractiveAvatar({
   const [, setData] = useState<StartAvatarResponse>();
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
-  const [chatMode, setChatMode] = useState("text_mode");
+  const [chatMode, setChatMode] = useState<"text_mode" | "voice_mode">("text_mode");
   const [showQAButton, setShowQAButton] = useState(false);
 
   const activateQA = async () => {
