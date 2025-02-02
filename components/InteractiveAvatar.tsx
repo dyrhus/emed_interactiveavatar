@@ -241,14 +241,8 @@ export default function InteractiveAvatar({
             await new Promise(resolve => setTimeout(resolve, 1000));
             setDebug("[Q&A Flow] Brief pause completed");
             
-            // Play permission message and show button
+            // Play permission message
             setDebug("[Q&A Flow] Playing permission message");
-            const handleSpeechStart = () => {
-              setShowQAButton(true);
-              avatar.current?.off(StreamingEvents.AVATAR_START_TALKING, handleSpeechStart);
-            };
-            avatar.current.on(StreamingEvents.AVATAR_START_TALKING, handleSpeechStart);
-            
             setCurrentScript("QA Permission Script");
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
