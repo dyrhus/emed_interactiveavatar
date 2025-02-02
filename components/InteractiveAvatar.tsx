@@ -37,7 +37,6 @@ export default function InteractiveAvatar({
   includeQA = false
 }: InteractiveAvatarProps) {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
-  const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>("");
   
@@ -49,11 +48,9 @@ export default function InteractiveAvatar({
   const [language, setLanguage] = useState<string>("en");
 
   const [, setData] = useState<StartAvatarResponse>();
-  const [text, setText] = useState<string>("");
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
   const [chatMode, setChatMode] = useState("text_mode");
-  const [isUserTalking, setIsUserTalking] = useState(false);
   const [showQAButton, setShowQAButton] = useState(false);
 
   const activateQA = async () => {
@@ -176,47 +173,11 @@ export default function InteractiveAvatar({
       setIsLoadingSession(false);
     }
   }
-  async function handleSpeak() {
-    setIsLoadingRepeat(true);
-    if (!avatar.current) {
-      setDebug("Avatar API not initialized");
-
-      return;
-    }
-    // speak({ text: text, task_type: TaskType.REPEAT })
-    await avatar.current
-      .speak({ text: text, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC })
-      .catch((e) => {
-        setDebug(e.message);
-      });
-    setIsLoadingRepeat(false);
-  }
   async function endSession() {
     await avatar.current?.stopAvatar();
     setStream(undefined);
   }
 
-  const handleChangeChatMode = useMemoizedFn(async (v) => {
-    if (v === chatMode) {
-      return;
-    }
-    if (v === "text_mode") {
-      avatar.current?.closeVoiceChat();
-    } else {
-      await avatar.current?.startVoiceChat();
-    }
-    setChatMode(v);
-  });
-
-  const previousText = usePrevious(text);
-
-  useEffect(() => {
-    if (!previousText && text) {
-      avatar.current?.startListening();
-    } else if (previousText && !text) {
-      avatar?.current?.stopListening();
-    }
-  }, [text, previousText]);
 
   useEffect(() => {
     return () => {
