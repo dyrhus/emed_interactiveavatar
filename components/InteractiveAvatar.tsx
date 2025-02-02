@@ -377,44 +377,46 @@ export default function InteractiveAvatar({
                   <Tab key="voice_mode" title="Voice mode" />
                 </Tabs>
               )}
-              {chatMode === "text_mode" ? (
-                <div className="w-full flex relative">
-                  <InteractiveAvatarTextInput
-                    disabled={!stream}
-                    input={text}
-                    label="Chat"
-                    loading={isLoadingRepeat}
-                    placeholder="Type something for the avatar to respond"
-                    setInput={setText}
-                    onSubmit={handleSpeak}
-                  />
-                  {text && (
-                    <Chip className="absolute right-16 top-3">Listening</Chip>
-                  )}
-                </div>
-              ) : (
-                <div className="w-full flex justify-center items-center">
-                  {showQAButton ? (
-                    <Button
-                      className="bg-black text-white hover:bg-gray-900"
-                      onClick={activateQA}
-                      size="md"
-                      variant="shadow"
-                    >
-                      Activate Q&A
-                    </Button>
-                  ) : (
-                    <Button
-                      className="bg-black text-white hover:bg-gray-900"
-                      isDisabled={!isUserTalking}
-                      size="md"
-                      variant="shadow"
-                    >
-                      {isUserTalking ? "Listening" : "Voice chat"}
-                    </Button>
-                  )}
-                </div>
-              )}
+              <div className="w-full flex justify-center items-center">
+                {showQAButton ? (
+                  <Button
+                    className="bg-black text-white hover:bg-gray-900"
+                    onClick={activateQA}
+                    size="md"
+                    variant="shadow"
+                  >
+                    Activate Q&A
+                  </Button>
+                ) : (
+                  <>
+                    {chatMode === "text_mode" ? (
+                      <div className="w-full flex relative">
+                        <InteractiveAvatarTextInput
+                          disabled={!stream}
+                          input={text}
+                          label="Chat"
+                          loading={isLoadingRepeat}
+                          placeholder="Type something for the avatar to respond"
+                          setInput={setText}
+                          onSubmit={handleSpeak}
+                        />
+                        {text && (
+                          <Chip className="absolute right-16 top-3">Listening</Chip>
+                        )}
+                      </div>
+                    ) : (
+                      <Button
+                        className="bg-black text-white hover:bg-gray-900"
+                        isDisabled={!isUserTalking}
+                        size="md"
+                        variant="shadow"
+                      >
+                        {isUserTalking ? "Listening" : "Voice chat"}
+                      </Button>
+                    )}
+                  </>
+                )}
+              </div>
             </CardFooter>
           </Card>
           <p className="font-mono text-right">
