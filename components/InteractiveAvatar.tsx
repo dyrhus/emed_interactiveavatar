@@ -119,14 +119,15 @@ export default function InteractiveAvatar({
     // Set up event listeners
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
       const timestamp = new Date().toISOString();
-      incrementEventCounter();
       const message = `[${timestamp}] Avatar started talking ${eventCounter + 1}${currentScript ? `: ${currentScript}` : ''}`;
       logDebug(message);
       
-      // Show Q&A button only when QA Permission Script starts (event 7)
+      // Show Q&A button only when QA Permission Script starts
       if (currentScript === "QA Permission Script") {
         setShowQAButton(true);
       }
+      
+      incrementEventCounter();
     });
 
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
