@@ -38,18 +38,12 @@ export default function InteractiveAvatar({
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>("");
-  const eventCounter = useRef(0);
   const [currentScript, setCurrentScript] = useState<string>("");
   
   const logDebug = (message: string) => {
     setDebug(prev => prev + '\n' + message);
     // eslint-disable-next-line no-console
     console.log(message);
-  };
-
-  const getNextEventCount = () => {
-    eventCounter.current += 1;
-    return eventCounter.current;
   };
 
   const knowledgeId = "046b4e319f334715a246e6b9977e42ca";
