@@ -227,9 +227,15 @@ export default function InteractiveAvatar({
             await new Promise(resolve => setTimeout(resolve, 1000));
             setDebug("[Q&A Flow] Brief pause completed");
             
-            // Play permission message and show activation button
+            // Play permission message
             setDebug("[Q&A Flow] Playing permission message");
-            setShowQAButton(true);
+            await new Promise(resolve => {
+              // Set a small delay to let the script start
+              setTimeout(() => {
+                setShowQAButton(true);
+                resolve(null);
+              }, 500);
+            });
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
