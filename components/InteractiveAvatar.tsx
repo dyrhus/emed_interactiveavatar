@@ -43,6 +43,11 @@ export default function InteractiveAvatar({
   
   const logDebug = (message: string) => {
     setDebug(message);
+    // Only log in development
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.log(message);
+    }
   };
 
   const incrementEventCounter = () => {
@@ -116,16 +121,14 @@ export default function InteractiveAvatar({
       const timestamp = new Date().toISOString();
       incrementEventCounter();
       const message = `[${timestamp}] Avatar started talking ${eventCounter + 1}${currentScript ? `: ${currentScript}` : ''}`;
-      setDebug(message);
-      console.log(message);
+      logDebug(message);
     });
 
     avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
       const timestamp = new Date().toISOString();
       incrementEventCounter();
       const message = `[${timestamp}] Avatar stopped talking ${eventCounter + 1}`;
-      setDebug(message);
-      console.log(message);
+      logDebug(message);
     });
     avatar.current.on(StreamingEvents.STREAM_DISCONNECTED, () => {
       setDebug("Stream disconnected");
