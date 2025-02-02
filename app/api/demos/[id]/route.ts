@@ -5,6 +5,7 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  console.log('[API] Fetching demo with ID:', params.id);
   try {
     const demo = store.getDemo(params.id);
 

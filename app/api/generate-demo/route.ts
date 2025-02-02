@@ -4,6 +4,7 @@ import { store } from '@/lib/store';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    console.log('[API] Generating demo with body:', body);
     const { customerName, introScript, outroScript, includeQA, password } = body;
     
     const demo = store.createDemo({

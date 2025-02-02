@@ -15,6 +15,7 @@ export default function Home() {
     password?: string;
   }) => {
     try {
+      console.log('[Home] Generating demo with config:', formData);
       const response = await fetch('/api/generate-demo', {
         method: 'POST',
         headers: {

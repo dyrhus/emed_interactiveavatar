@@ -7,6 +7,7 @@ export async function POST(
 ) {
   try {
     const { password } = await request.json();
+    console.log('[API] Verifying password for demo ID:', params.id);
     
     if (store.verifyPassword(params.id, password)) {
       return NextResponse.json({ 
