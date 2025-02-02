@@ -228,16 +228,19 @@ export default function InteractiveAvatar({
             });
             setDebug("[Q&A Flow] Voice chat capabilities initialized");
             
-            // Play permission message and show button
+            // Set up event listener for speech start
+            const handleSpeechStart = () => {
+              setShowQAButton(true);
+              avatar.current?.off(StreamingEvents.AVATAR_START_TALKING, handleSpeechStart);
+            };
+            avatar.current.on(StreamingEvents.AVATAR_START_TALKING, handleSpeechStart);
+            
+            // Play permission message
             setDebug("[Q&A Flow] Playing permission message");
             await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
-              taskMode: TaskMode.SYNC,
-              onStart: () => {
-                // Show button when speech starts
-                setShowQAButton(true);
-              }
+              taskMode: TaskMode.SYNC
             });
           } catch (error) {
             setDebug(`[Q&A Flow] Error during microphone setup: ${error}`);
