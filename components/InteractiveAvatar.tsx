@@ -41,6 +41,7 @@ export default function InteractiveAvatar({
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>("");
   const [currentScript, setCurrentScript] = useState<string>("");
+  const [isFreeSpeechMode, setIsFreeSpeechMode] = useState(false);
   
   const logDebug = (message: string) => {
     setDebug(prev => prev + '\n' + message);
@@ -104,6 +105,8 @@ export default function InteractiveAvatar({
       
       setIsVoiceChatActive(true);
       setShowLogo(false);
+      setIsFreeSpeechMode(true); // Set free speech mode active
+      setCurrentScript(""); // Clear current script since we're in free speech mode
       
       // Start Q&A
       if (avatar.current) {
@@ -119,6 +122,7 @@ export default function InteractiveAvatar({
       setShowLogo(true);
       setShowQAButton(true);
       setIsVoiceChatActive(false);
+      setIsFreeSpeechMode(false);
     }
   };
 
@@ -407,7 +411,7 @@ export default function InteractiveAvatar({
             <CardFooter className="flex flex-col gap-3 relative border-t">
               <div className="w-full flex justify-center items-center">
                 {/* Simplified condition to avoid race conditions */}
-                {isVoiceChatActive ? (
+                {isFreeSpeechMode ? (
                   <Button
                     className={clsx(
                       "bg-black text-white",
@@ -419,7 +423,7 @@ export default function InteractiveAvatar({
                   >
                     Listening...
                   </Button>
-                ) : showQAButton ? (
+                ) : !isVoiceChatActive && currentScript === "QA Permission Script" ? (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
                     onClick={activateQA}
