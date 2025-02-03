@@ -30,7 +30,8 @@ interface InteractiveAvatarProps {
   includeQA?: boolean;
 }
 
-export default function InteractiveAvatar({
+export default function InteractiveAvatar({ 
+  const [isUserSpeaking, setIsUserSpeaking] = useState(false);
   initialScript,
   outroScript,
   includeQA = false
@@ -85,10 +86,10 @@ export default function InteractiveAvatar({
         if (avatar.current) {
           const currentAvatar = avatar.current;
           currentAvatar.on(StreamingEvents.USER_START, () => {
-            currentAvatar.isUserSpeaking = true;
+            setIsUserSpeaking(true);
           });
           currentAvatar.on(StreamingEvents.USER_STOP, () => {
-            currentAvatar.isUserSpeaking = false;
+            setIsUserSpeaking(false);
           });
         }
       }
