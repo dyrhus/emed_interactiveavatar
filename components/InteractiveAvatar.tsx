@@ -238,6 +238,9 @@ export default function InteractiveAvatar({
   async function endSession() {
     await avatar.current?.stopAvatar();
     setStream(undefined);
+    setIsVoiceChatActive(false);
+    setIsFreeSpeechMode(false);
+    setIsUserSpeaking(false);
   }
 
 
