@@ -160,6 +160,7 @@ export default function InteractiveAvatar({
         setShowQAButton(true);
         setShowLogo(false);
         logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
+        logDebug(`[UI State] Setting showQAButton: true, showLogo: false`);
       }
     });
 
@@ -382,7 +383,7 @@ export default function InteractiveAvatar({
           <Divider />
             <CardFooter className="flex flex-col gap-3 relative border-t">
               <div className="w-full flex justify-center items-center">
-                {showLogo && (
+                {showLogo && !showQAButton && (
                   <Image
                     src="/eMed Logo 200x100.png"
                     alt="eMed Logo"
