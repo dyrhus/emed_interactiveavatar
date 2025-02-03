@@ -393,7 +393,7 @@ export default function InteractiveAvatar({
             <CardFooter className="flex flex-col gap-3 relative border-t">
               <div className="w-full flex justify-center items-center">
                 {/* Simplified condition to avoid race conditions */}
-                {showLogo && (
+                {showLogo && !isVoiceChatActive && !showQAButton && (
                   <Image
                     src="/eMed Logo 200x100.png"
                     alt="eMed Logo"
@@ -401,9 +401,7 @@ export default function InteractiveAvatar({
                     height={50}
                   />
                 )}
-                {/* Debug render states - moved to useEffect */}
-                {/* Ensure QA button shows when flag is true */}
-                {showQAButton && (
+                {showQAButton && !isVoiceChatActive && (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
                     onClick={activateQA}
@@ -415,7 +413,10 @@ export default function InteractiveAvatar({
                 )}
                 {isVoiceChatActive && (
                   <Button
-                    className="bg-black text-white hover:bg-gray-900"
+                    className={clsx(
+                      "bg-black text-white",
+                      avatar?.current?.isUserSpeaking ? "opacity-100" : "opacity-50"
+                    )}
                     size="md"
                     variant="shadow"
                     disabled
