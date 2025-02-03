@@ -407,15 +407,7 @@ export default function InteractiveAvatar({
             <CardFooter className="flex flex-col gap-3 relative border-t">
               <div className="w-full flex justify-center items-center">
                 {/* Simplified condition to avoid race conditions */}
-                {showLogo && !isVoiceChatActive && (
-                  <Image
-                    src="/eMed Logo 200x100.png"
-                    alt="eMed Logo"
-                    width={100}
-                    height={50}
-                  />
-                )}
-                {showQAButton && !isVoiceChatActive && (
+                {!isVoiceChatActive && showQAButton && (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
                     onClick={activateQA}
@@ -425,7 +417,7 @@ export default function InteractiveAvatar({
                     Activate Q&A
                   </Button>
                 )}
-                {isVoiceChatActive && (
+                {isVoiceChatActive ? (
                   <Button
                     className={clsx(
                       "bg-black text-white",
@@ -437,6 +429,13 @@ export default function InteractiveAvatar({
                   >
                     Listening...
                   </Button>
+                ) : !showQAButton && (
+                  <Image
+                    src="/eMed Logo 200x100.png"
+                    alt="eMed Logo"
+                    width={100}
+                    height={50}
+                  />
                 )}
               </div>
             </CardFooter>
