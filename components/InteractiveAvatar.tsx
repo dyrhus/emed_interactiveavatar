@@ -429,7 +429,7 @@ export default function InteractiveAvatar({
                   <Button
                     className={clsx(
                       "bg-black text-white",
-                      avatar?.current?.isUserSpeaking ? "opacity-100" : "opacity-50"
+                      isUserSpeaking ? "opacity-100" : "opacity-50"
                     )}
                     size="md"
                     variant="shadow"
