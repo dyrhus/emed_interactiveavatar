@@ -163,12 +163,16 @@ export default function InteractiveAvatar({
         logDebug(`[${timestamp}] Speaking Outro Script: ${messageContent}`);
       } else if (messageContent.includes("I can switch to interactive Q&A mode")) {
         setCurrentScript("QA Permission Script");
+        // Force immediate state updates
         setShowQAButton(true);
         setShowLogo(false);
         logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
-        logDebug(`[UI State] Setting showQAButton: ${true}, showLogo: ${false}`);
-        logDebug(`[UI State] Current showQAButton value: ${showQAButton}`);
-        logDebug(`[UI State] Current showLogo value: ${showLogo}`);
+        // Add delay to ensure state has updated before logging
+        setTimeout(() => {
+          logDebug(`[UI State] Setting showQAButton: true, showLogo: false`);
+          logDebug(`[UI State] Current showQAButton value: ${showQAButton}`);
+          logDebug(`[UI State] Current showLogo value: ${showLogo}`);
+        }, 0);
       }
     });
 
@@ -391,7 +395,8 @@ export default function InteractiveAvatar({
           <Divider />
             <CardFooter className="flex flex-col gap-3 relative border-t">
               <div className="w-full flex justify-center items-center">
-                {showLogo && !showQAButton && (
+                {/* Simplified condition to avoid race conditions */}
+                {showLogo && (
                   <Image
                     src="/eMed Logo 200x100.png"
                     alt="eMed Logo"
@@ -400,7 +405,8 @@ export default function InteractiveAvatar({
                   />
                 )}
                 {/* Debug render states - moved to useEffect */}
-                {showQAButton && !isVoiceChatActive && (
+                {/* Ensure QA button shows when flag is true */}
+                {showQAButton && (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
                     onClick={activateQA}
