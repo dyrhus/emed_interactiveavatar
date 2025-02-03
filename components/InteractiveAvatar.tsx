@@ -357,6 +357,17 @@ export default function InteractiveAvatar({
             <CardBody className="p-0 flex flex-col">
               {stream ? (
                 <>
+                  {/* End Session Button - Always visible */}
+                  <div className="absolute top-8 right-6 z-20">
+                    <Button
+                      className="bg-black text-white rounded-lg hover:bg-gray-900"
+                      size="sm"
+                      variant="shadow"
+                      onClick={endSession}
+                    >
+                      End session
+                    </Button>
+                  </div>
                   <div className={clsx(
                     "video-container",
                     currentScript === "Demo Player Script" && "minimized"
@@ -373,16 +384,6 @@ export default function InteractiveAvatar({
                     >
                       <track kind="captions" />
                     </video>
-                    <div className="absolute top-8 right-6 z-10">
-                      <Button
-                        className="bg-black text-white rounded-lg hover:bg-gray-900"
-                        size="sm"
-                        variant="shadow"
-                        onClick={endSession}
-                      >
-                        End session
-                      </Button>
-                    </div>
                   </div>
                   {currentScript === "Demo Player Script" && (
                     <div className="video-placeholder">
