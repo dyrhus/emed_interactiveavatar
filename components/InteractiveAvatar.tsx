@@ -142,24 +142,24 @@ export default function InteractiveAvatar({
       // Only update script and log when avatar is actively speaking the content
       if (messageContent.includes(initialScript)) {
         setCurrentScript("Intro Script");
-        setShowQAButton(false); // Ensure button is hidden at start
+        setShowQAButton(false);
+        setShowLogo(true);
         logDebug(`[${timestamp}] Speaking Intro Script: ${messageContent}`);
       } else if (messageContent.includes("Let me walk you through")) {
         setCurrentScript("Demo Player Script");
         setShowQAButton(false);
+        setShowLogo(true);
         logDebug(`[${timestamp}] Speaking Demo Script: ${messageContent}`);
       } else if (outroScript && messageContent.includes(outroScript)) {
         setCurrentScript("Outro Script");
         setShowQAButton(false);
+        setShowLogo(true);
         logDebug(`[${timestamp}] Speaking Outro Script: ${messageContent}`);
       } else if (messageContent.includes("I can switch to interactive Q&A mode")) {
         setCurrentScript("QA Permission Script");
-        setShowQAButton(true); // Show button when QA script starts
+        setShowQAButton(true);
+        setShowLogo(false);
         logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
-        // Force update of button visibility
-        setTimeout(() => {
-          setShowQAButton(true);
-        }, 0);
       }
     });
 
