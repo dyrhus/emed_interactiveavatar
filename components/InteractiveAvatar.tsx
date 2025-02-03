@@ -141,7 +141,7 @@ export default function InteractiveAvatar({
         setCurrentScript("Outro Script");
         setShowQAButton(false);
         logDebug(`[${timestamp}] Speaking Outro Script: ${messageContent}`);
-      } else if (messageContent.includes(QA_PERMISSION_SCRIPT)) {
+      } else if (messageContent.includes("I can switch to interactive Q&A mode")) {
         setCurrentScript("QA Permission Script");
         setShowQAButton(true); // Show button when QA script starts
         logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
