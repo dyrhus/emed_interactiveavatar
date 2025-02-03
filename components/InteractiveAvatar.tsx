@@ -46,12 +46,6 @@ export default function InteractiveAvatar({
     console.log(message);
   };
 
-  // Debug render states
-  useEffect(() => {
-    logDebug(`[Render] Logo visible: ${showLogo && !showQAButton}`);
-    logDebug(`[Render] QA Button visible: ${showQAButton && !isVoiceChatActive}`);
-  }, [showLogo, showQAButton, isVoiceChatActive]);
-
   const knowledgeId = "046b4e319f334715a246e6b9977e42ca";
   const avatarId = "Elenora_FitnessCoach_public";
   const [language, setLanguage] = useState<string>("en");
@@ -62,6 +56,12 @@ export default function InteractiveAvatar({
   const [showQAButton, setShowQAButton] = useState(false);
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
   const [showLogo, setShowLogo] = useState(true);
+
+  // Debug render states
+  useEffect(() => {
+    logDebug(`[Render] Logo visible: ${showLogo && !showQAButton}`);
+    logDebug(`[Render] QA Button visible: ${showQAButton && !isVoiceChatActive}`);
+  }, [showLogo, showQAButton, isVoiceChatActive]);
 
   const activateQA = async () => {
     try {
