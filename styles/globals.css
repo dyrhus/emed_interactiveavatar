@@ -75,6 +75,33 @@
   }
 }
 
+/* Video container transitions */
+.video-container {
+  transition: all 0.5s ease-in-out;
+  width: 100%;
+  height: 480px;
+}
+
+.video-container.minimized {
+  width: 120px;
+  height: 160px;
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 480px;
+  background-color: #f9fafb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Listening indicator states */
 .listening-active {
   color: #ff0000; /* Red for active listening */

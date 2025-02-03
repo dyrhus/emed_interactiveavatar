@@ -356,30 +356,43 @@ export default function InteractiveAvatar({
             )}
             <CardBody className="p-0 flex flex-col">
               {stream ? (
-                <div className="w-full h-[480px] justify-center items-center flex overflow-hidden">
-                  <video
-                    ref={mediaStream}
-                    autoPlay
-                    playsInline
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  >
-                    <track kind="captions" />
-                  </video>
-                  <div className="absolute top-8 right-6 z-10">
-                    <Button
-                      className="bg-black text-white rounded-lg hover:bg-gray-900"
-                      size="sm"
-                      variant="shadow"
-                      onClick={endSession}
+                <>
+                  <div className={clsx(
+                    "video-container",
+                    currentScript === "Demo Player Script" && "minimized"
+                  )}>
+                    <video
+                      ref={mediaStream}
+                      autoPlay
+                      playsInline
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     >
-                      End session
-                    </Button>
+                      <track kind="captions" />
+                    </video>
+                    <div className="absolute top-8 right-6 z-10">
+                      <Button
+                        className="bg-black text-white rounded-lg hover:bg-gray-900"
+                        size="sm"
+                        variant="shadow"
+                        onClick={endSession}
+                      >
+                        End session
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                  {currentScript === "Demo Player Script" && (
+                    <div className="video-placeholder">
+                      <div className="text-center text-gray-500">
+                        <p className="text-lg font-semibold">Demo Playback</p>
+                        <p className="text-sm">Interactive avatar minimized</p>
+                      </div>
+                    </div>
+                  )}
+                </>
               ) : !isLoadingSession ? (
                 <div className="h-full justify-center items-center flex flex-col gap-4 p-4">
                 <div className="flex flex-col gap-2 w-full max-w-[260px]">
