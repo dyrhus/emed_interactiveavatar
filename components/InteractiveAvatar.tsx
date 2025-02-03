@@ -36,6 +36,8 @@ export default function InteractiveAvatar({
   includeQA = false
 }: InteractiveAvatarProps) {
   const [isUserSpeaking, setIsUserSpeaking] = useState(false);
+  // Add clsx import at the top
+  import clsx from 'clsx';
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>("");
