@@ -271,11 +271,12 @@ export default function InteractiveAvatar({
             // Brief pause after outro
             await new Promise(resolve => setTimeout(resolve, 1000));
             setDebug("[Q&A Flow] Brief pause completed");
-            
+          
             // Play permission message
             setCurrentScript("QA Permission Script");
             setDebug(`[Script Flow] Playing QA Permission Script`);
-            avatar.current.speak({
+            logDebug(`[${new Date().toISOString()}] Speaking QA Permission Script: ${QA_PERMISSION_SCRIPT}`);
+            await avatar.current.speak({
               text: QA_PERMISSION_SCRIPT,
               taskType: TaskType.REPEAT,
               taskMode: TaskMode.SYNC
