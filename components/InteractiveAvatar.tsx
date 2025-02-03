@@ -212,25 +212,6 @@ export default function InteractiveAvatar({
   }, [mediaStream, stream]);
 
 
-  // Function to speak with script tracking
-  const speakWithTracking = async (text: string, scriptName: string) => {
-    if (!avatar.current) return;
-    
-    setCurrentScript(scriptName);
-    setDebug(`[Script Flow] Playing ${scriptName}`);
-    
-    try {
-      await avatar.current.speak({
-        text,
-        taskType: TaskType.REPEAT,
-        taskMode: TaskMode.SYNC
-      });
-      setDebug(`[Script Flow] ${scriptName} completed`);
-    } catch (error) {
-      setDebug(`[Script Flow] Error in ${scriptName}: ${error}`);
-      throw error; // Propagate error to caller
-    }
-  };
 
   // Function to play the complete script sequence
   const playCompleteScript = async (initialGreeting: string) => {
@@ -238,7 +219,7 @@ export default function InteractiveAvatar({
 
     try {
       // Create a promise that resolves when the script is done
-      const waitForScript = (scriptName: string) => {
+      const waitForScript = () => {
         return new Promise<void>((resolve) => {
           const handleStop = () => {
             avatar.current?.off(StreamingEvents.AVATAR_STOP_TALKING, handleStop);
