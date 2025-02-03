@@ -346,7 +346,7 @@ export default function InteractiveAvatar({
           {/* iPhone Notch */}
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[20px] w-[100px] bg-black rounded-b-[15px] z-10"></div>
           
-          <Card className="w-full h-full rounded-none">
+          <Card className="w-full h-full rounded-none flex flex-col">
             {currentScript && (
               <div className="absolute top-2 left-2 z-10">
                 <span className="text-xs bg-black/50 text-white px-2 py-1 rounded">
@@ -354,7 +354,7 @@ export default function InteractiveAvatar({
                 </span>
               </div>
             )}
-            <CardBody className="p-0 flex flex-col">
+            <CardBody className="p-0 flex-1 flex flex-col relative">
               {stream ? (
                 <>
                   {/* End Session Button - Always visible */}
@@ -424,40 +424,37 @@ export default function InteractiveAvatar({
               <Spinner color="default" size="lg" />
             )}
           </CardBody>
-          <Divider />
-            <CardFooter className="flex flex-col gap-3 relative border-t">
-              <div className="w-full flex justify-center items-center">
-                {/* Simplified condition to avoid race conditions */}
-                {isFreeSpeechMode ? (
-                  <Button
-                    className={clsx(
-                      "text-white",
-                      isUserSpeaking ? "bg-red-600" : "bg-gray-500"
-                    )}
-                    size="md"
-                    variant="shadow"
-                    disabled
-                  >
-                    Listening...
-                  </Button>
-                ) : !isVoiceChatActive && currentScript === "QA Permission Script" ? (
-                  <Button
-                    className="bg-black text-white hover:bg-gray-900"
-                    onClick={activateQA}
-                    size="md"
-                    variant="shadow"
-                  >
-                    Activate Q&A
-                  </Button>
-                ) : (
-                  <Image
-                    src="/eMed Logo 200x100.png"
-                    alt="eMed Logo"
-                    width={100}
-                    height={50}
-                  />
-                )}
-              </div>
+          <Divider className="m-0" />
+            <CardFooter className="h-[72px] flex items-center justify-center border-t">
+              {isFreeSpeechMode ? (
+                <Button
+                  className={clsx(
+                    "text-white",
+                    isUserSpeaking ? "bg-red-600" : "bg-gray-500"
+                  )}
+                  size="md"
+                  variant="shadow"
+                  disabled
+                >
+                  Listening...
+                </Button>
+              ) : !isVoiceChatActive && currentScript === "QA Permission Script" ? (
+                <Button
+                  className="bg-black text-white hover:bg-gray-900"
+                  onClick={activateQA}
+                  size="md"
+                  variant="shadow"
+                >
+                  Activate Q&A
+                </Button>
+              ) : (
+                <Image
+                  src="/eMed Logo 200x100.png"
+                  alt="eMed Logo"
+                  width={100}
+                  height={50}
+                />
+              )}
             </CardFooter>
           </Card>
           <div className="mt-4 p-4 bg-gray-100 rounded-lg">
