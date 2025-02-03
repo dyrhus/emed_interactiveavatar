@@ -55,15 +55,21 @@ export default function InteractiveAvatar({
   const avatar = useRef<StreamingAvatar | null>(null);
   const [showQAButton, setShowQAButton] = useState(false);
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
+  const [showLogo, setShowLogo] = useState(true);
 
   const activateQA = async () => {
     try {
-      // Initialize voice chat capabilities
+      setShowLogo(false);
+      setShowQAButton(false);
       setDebug("[Q&A Flow] Initializing voice chat capabilities");
-      await avatar.current?.closeVoiceChat();
-      await avatar.current?.startVoiceChat({
-        useSilencePrompt: false,
-      });
+      
+      // Initialize voice chat capabilities
+      if (avatar.current) {
+        await avatar.current.closeVoiceChat();
+        await avatar.current.startVoiceChat({
+          useSilencePrompt: false,
+        });
+      }
       setDebug("[Q&A Flow] Voice chat capabilities initialized");
 
       // Request microphone permissions
@@ -72,17 +78,22 @@ export default function InteractiveAvatar({
       stream.getTracks().forEach(track => track.stop());
       setDebug("[Q&A Flow] Microphone access granted");
       
-      // Hide the activation button
-      setShowQAButton(false);
+      setIsVoiceChatActive(true);
       
       // Start Q&A
-      await avatar.current?.speak({
-        text: "Great! Now that we have voice chat set up, I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
-        taskType: TaskType.REPEAT,
-        taskMode: TaskMode.SYNC
-      });
+      if (avatar.current) {
+        await avatar.current.speak({
+          text: "Great! Now that we have voice chat set up, I'm ready to answer any questions you have about eMed's GLP-1 program. What would you like to know?",
+          taskType: TaskType.REPEAT,
+          taskMode: TaskMode.SYNC
+        });
+      }
     } catch (error) {
       setDebug(`[Q&A Flow] Error during setup: ${error}`);
+      // Reset states on error
+      setShowLogo(true);
+      setShowQAButton(true);
+      setIsVoiceChatActive(false);
     }
   };
 
