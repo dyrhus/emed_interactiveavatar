@@ -74,3 +74,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Listening indicator states */
+.listening-active {
+  color: #ff0000; /* Red for active listening */
+}
+
+.listening-inactive {
+  color: #808080; /* Grey for inactive state */
+}
