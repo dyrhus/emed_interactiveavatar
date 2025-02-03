@@ -110,7 +110,7 @@ export default function DemoPage({ params }: { params: { id: string } }) {
       <section id="interactive" className="w-full py-16 bg-[hsl(221.54,100%,97.45%)]">
         <div className="container mx-auto px-4">
           <Card className="p-6">
-            <h1 className="text-2xl font-bold mb-4">
+            <h1 className="text-2xl font-bold mb-4 text-center">
               Demo for {demoConfig.customerName}
             </h1>
             <InteractiveAvatar 
