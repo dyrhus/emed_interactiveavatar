@@ -110,32 +110,38 @@ export default function InteractiveAvatar({
     });
 
     // Set up event listeners
+    avatar.current.on(StreamingEvents.AVATAR_START_TALKING, () => {
+      const timestamp = new Date().toISOString();
+      logDebug(`[${timestamp}] Avatar started speaking`);
+    });
+
+    avatar.current.on(StreamingEvents.AVATAR_STOP_TALKING, () => {
+      const timestamp = new Date().toISOString();
+      logDebug(`[${timestamp}] Avatar stopped speaking`);
+    });
+
     avatar.current.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (event) => {
       const timestamp = new Date().toISOString();
-      
-      // Extract message content from the event
       const messageContent = event?.message || event?.detail?.message || '';
       
-      logDebug(`[${timestamp}] Raw message data: ${JSON.stringify(event)}`);
-      
-      // Detect current script based on content
-      if (messageContent.includes(initialScript || "Hi, my name is Emmy")) {
+      if (!messageContent) {
+        return;
+      }
+
+      // Only update script and log when avatar is actively speaking the content
+      if (messageContent.includes(initialScript)) {
         setCurrentScript("Intro Script");
-        logDebug(`[${timestamp}] Detected Intro Script`);
+        logDebug(`[${timestamp}] Speaking Intro Script: ${messageContent}`);
       } else if (messageContent.includes("Let me walk you through")) {
         setCurrentScript("Demo Player Script");
-        logDebug(`[${timestamp}] Detected Demo Player Script`);
+        logDebug(`[${timestamp}] Speaking Demo Script: ${messageContent}`);
       } else if (outroScript && messageContent.includes(outroScript)) {
         setCurrentScript("Outro Script");
-        logDebug(`[${timestamp}] Detected Outro Script`);
+        logDebug(`[${timestamp}] Speaking Outro Script: ${messageContent}`);
       } else if (messageContent.includes("I can switch to interactive Q&A mode")) {
         setCurrentScript("QA Permission Script");
         setShowQAButton(true);
-        logDebug(`[${timestamp}] Detected QA Permission Script`);
-      }
-      
-      if (messageContent) {
-        logDebug(`[${timestamp}] Avatar message: ${messageContent}`);
+        logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
       }
     });
 
