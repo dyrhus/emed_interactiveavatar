@@ -160,7 +160,9 @@ export default function InteractiveAvatar({
         setShowQAButton(true);
         setShowLogo(false);
         logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
-        logDebug(`[UI State] Setting showQAButton: true, showLogo: false`);
+        logDebug(`[UI State] Setting showQAButton: ${true}, showLogo: ${false}`);
+        logDebug(`[UI State] Current showQAButton value: ${showQAButton}`);
+        logDebug(`[UI State] Current showLogo value: ${showLogo}`);
       }
     });
 
@@ -391,6 +393,9 @@ export default function InteractiveAvatar({
                     height={50}
                   />
                 )}
+                {/* Debug render states */}
+                {logDebug(`[Render] Logo visible: ${showLogo && !showQAButton}`)}
+                {logDebug(`[Render] QA Button visible: ${showQAButton && !isVoiceChatActive}`)}
                 {showQAButton && !isVoiceChatActive && (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
