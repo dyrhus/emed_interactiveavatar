@@ -219,10 +219,11 @@ export default function InteractiveAvatar({
 
     try {
       // Create a promise that resolves when the script is done
-      const waitForScript = () => {
+      const waitForScript = (scriptName: string) => {
         return new Promise<void>((resolve) => {
           const handleStop = () => {
             avatar.current?.off(StreamingEvents.AVATAR_STOP_TALKING, handleStop);
+            logDebug(`[Script Flow] ${scriptName} completed`);
             resolve();
           };
           avatar.current?.on(StreamingEvents.AVATAR_STOP_TALKING, handleStop);
@@ -238,7 +239,6 @@ export default function InteractiveAvatar({
         taskMode: TaskMode.SYNC
       });
       await waitForScript("Intro Script");
-      setDebug(`[Script Flow] Intro Script completed`);
 
       // Play demo script
       setCurrentScript("Demo Player Script");
@@ -249,7 +249,6 @@ export default function InteractiveAvatar({
         taskMode: TaskMode.SYNC
       });
       await waitForScript("Demo Player Script");
-      setDebug(`[Script Flow] Demo Script completed`);
 
       // Play outro if provided
       if (outroScript) {
@@ -279,7 +278,6 @@ export default function InteractiveAvatar({
               taskMode: TaskMode.SYNC
             });
             await waitForScript("QA Permission Script");
-            setDebug(`[Script Flow] QA Permission Script completed`);
           } catch (error) {
             setDebug(`[Q&A Flow] Error during Q&A setup: ${error}`);
           }
