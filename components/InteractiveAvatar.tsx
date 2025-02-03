@@ -237,15 +237,50 @@ export default function InteractiveAvatar({
     if (!avatar.current) return;
 
     try {
+      // Create a promise that resolves when the script is done
+      const waitForScript = (scriptName: string) => {
+        return new Promise<void>((resolve) => {
+          const handleStop = () => {
+            avatar.current?.off(StreamingEvents.AVATAR_STOP_TALKING, handleStop);
+            resolve();
+          };
+          avatar.current?.on(StreamingEvents.AVATAR_STOP_TALKING, handleStop);
+        });
+      };
+
       // Play initial greeting
-      await speakWithTracking(initialGreeting, "Intro Script");
+      setCurrentScript("Intro Script");
+      setDebug(`[Script Flow] Playing Intro Script`);
+      avatar.current.speak({
+        text: initialGreeting,
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+      await waitForScript("Intro Script");
+      setDebug(`[Script Flow] Intro Script completed`);
 
       // Play demo script
-      await speakWithTracking(DEMO_PLAYER_SCRIPT, "Demo Player Script");
+      setCurrentScript("Demo Player Script");
+      setDebug(`[Script Flow] Playing Demo Script`);
+      avatar.current.speak({
+        text: DEMO_PLAYER_SCRIPT,
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC
+      });
+      await waitForScript("Demo Player Script");
+      setDebug(`[Script Flow] Demo Script completed`);
 
       // Play outro if provided
       if (outroScript) {
-        await speakWithTracking(outroScript, "Outro Script");
+        setCurrentScript("Outro Script");
+        setDebug(`[Script Flow] Playing Outro Script`);
+        avatar.current.speak({
+          text: outroScript,
+          taskType: TaskType.REPEAT,
+          taskMode: TaskMode.SYNC
+        });
+        await waitForScript("Outro Script");
+        setDebug(`[Script Flow] Outro Script completed`);
 
         // If Q&A is enabled, start Q&A setup
         if (includeQA) {
@@ -255,7 +290,15 @@ export default function InteractiveAvatar({
             setDebug("[Q&A Flow] Brief pause completed");
             
             // Play permission message
-            await speakWithTracking(QA_PERMISSION_SCRIPT, "QA Permission Script");
+            setCurrentScript("QA Permission Script");
+            setDebug(`[Script Flow] Playing QA Permission Script`);
+            avatar.current.speak({
+              text: QA_PERMISSION_SCRIPT,
+              taskType: TaskType.REPEAT,
+              taskMode: TaskMode.SYNC
+            });
+            await waitForScript("QA Permission Script");
+            setDebug(`[Script Flow] QA Permission Script completed`);
           } catch (error) {
             setDebug(`[Q&A Flow] Error during Q&A setup: ${error}`);
           }
