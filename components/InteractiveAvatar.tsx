@@ -382,7 +382,15 @@ export default function InteractiveAvatar({
           <Divider />
             <CardFooter className="flex flex-col gap-3 relative border-t">
               <div className="w-full flex justify-center items-center">
-                {showQAButton && (
+                {showLogo && (
+                  <Image
+                    src="/eMed Logo 200x100.png"
+                    alt="eMed Logo"
+                    width={100}
+                    height={50}
+                  />
+                )}
+                {showQAButton && !isVoiceChatActive && (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
                     onClick={activateQA}
@@ -397,17 +405,10 @@ export default function InteractiveAvatar({
                     className="bg-black text-white hover:bg-gray-900"
                     size="md"
                     variant="shadow"
+                    disabled
                   >
                     Listening...
                   </Button>
-                )}
-                {!showQAButton && !isVoiceChatActive && (
-                  <Image
-                    src="/eMed Logo 200x100.png"
-                    alt="eMed Logo"
-                    width={100}
-                    height={50}
-                  />
                 )}
               </div>
             </CardFooter>
