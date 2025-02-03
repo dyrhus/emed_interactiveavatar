@@ -417,8 +417,8 @@ export default function InteractiveAvatar({
                 {isFreeSpeechMode ? (
                   <Button
                     className={clsx(
-                      "bg-black text-white",
-                      isUserSpeaking ? "opacity-100" : "opacity-50"
+                      "text-white",
+                      isUserSpeaking ? "bg-red-600" : "bg-gray-500"
                     )}
                     size="md"
                     variant="shadow"
