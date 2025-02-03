@@ -79,10 +79,10 @@
 .video-container {
   transition: all 0.5s ease-in-out;
   width: 100%;
-  height: 480px;
+  height: 100%;
   transform-origin: bottom left;
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
 }
 
@@ -99,7 +99,7 @@
 
 .video-placeholder {
   width: 100%;
-  height: 480px;
+  height: 100%;
   background-color: #f9fafb;
   display: flex;
   justify-content: center;

@@ -354,7 +354,7 @@ export default function InteractiveAvatar({
                 </span>
               </div>
             )}
-            <CardBody className="p-0 flex-1 flex flex-col relative">
+            <CardBody className="p-0 flex-1 flex flex-col relative overflow-hidden">
               {stream ? (
                 <>
                   {/* End Session Button - Always visible */}
