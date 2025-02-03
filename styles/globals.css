@@ -83,12 +83,12 @@
 }
 
 .video-container.minimized {
-  width: 120px;
-  height: 160px;
+  width: 80px;
+  height: 120px;
   position: absolute;
   bottom: 80px;
-  left: 20px;
-  border-radius: 8px;
+  left: 16px;
+  border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
