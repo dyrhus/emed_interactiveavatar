@@ -82,7 +82,7 @@
   height: 100%;
   transform-origin: bottom left;
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
 }
 
