@@ -407,16 +407,6 @@ export default function InteractiveAvatar({
             <CardFooter className="flex flex-col gap-3 relative border-t">
               <div className="w-full flex justify-center items-center">
                 {/* Simplified condition to avoid race conditions */}
-                {!isVoiceChatActive && showQAButton && (
-                  <Button
-                    className="bg-black text-white hover:bg-gray-900"
-                    onClick={activateQA}
-                    size="md"
-                    variant="shadow"
-                  >
-                    Activate Q&A
-                  </Button>
-                )}
                 {isVoiceChatActive ? (
                   <Button
                     className={clsx(
@@ -429,7 +419,16 @@ export default function InteractiveAvatar({
                   >
                     Listening...
                   </Button>
-                ) : !showQAButton && (
+                ) : showQAButton && !currentScript.includes("QA Permission Script") ? (
+                  <Button
+                    className="bg-black text-white hover:bg-gray-900"
+                    onClick={activateQA}
+                    size="md"
+                    variant="shadow"
+                  >
+                    Activate Q&A
+                  </Button>
+                ) : (
                   <Image
                     src="/eMed Logo 200x100.png"
                     alt="eMed Logo"
