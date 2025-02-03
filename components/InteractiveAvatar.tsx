@@ -78,7 +78,15 @@ export default function InteractiveAvatar({
       if (avatar.current) {
         await avatar.current.closeVoiceChat();
         await avatar.current.startVoiceChat({
-          useSilencePrompt: false,
+          useSilencePrompt: false
+        });
+
+        // Add user speaking event listener
+        avatar.current.on(StreamingEvents.USER_START, () => {
+          avatar.current.isUserSpeaking = true;
+        });
+        avatar.current.on(StreamingEvents.USER_STOP, () => {
+          avatar.current.isUserSpeaking = false;
         });
       }
       setDebug("[Q&A Flow] Voice chat capabilities initialized");
@@ -90,6 +98,7 @@ export default function InteractiveAvatar({
       setDebug("[Q&A Flow] Microphone access granted");
       
       setIsVoiceChatActive(true);
+      setShowLogo(false);
       
       // Start Q&A
       if (avatar.current) {
