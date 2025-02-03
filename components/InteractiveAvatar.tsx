@@ -57,11 +57,16 @@ export default function InteractiveAvatar({
   const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
   const [showLogo, setShowLogo] = useState(true);
 
-  // Debug render states
+  // Debug render states and handle script transitions
   useEffect(() => {
+    if (currentScript === "QA Permission Script") {
+      setShowQAButton(true);
+      setShowLogo(false);
+    }
     logDebug(`[Render] Logo visible: ${showLogo && !showQAButton}`);
     logDebug(`[Render] QA Button visible: ${showQAButton && !isVoiceChatActive}`);
-  }, [showLogo, showQAButton, isVoiceChatActive]);
+    logDebug(`[Script State] Current script: ${currentScript}`);
+  }, [showLogo, showQAButton, isVoiceChatActive, currentScript]);
 
   const activateQA = async () => {
     try {
@@ -163,16 +168,8 @@ export default function InteractiveAvatar({
         logDebug(`[${timestamp}] Speaking Outro Script: ${messageContent}`);
       } else if (messageContent.includes("I can switch to interactive Q&A mode")) {
         setCurrentScript("QA Permission Script");
-        // Force immediate state updates
-        setShowQAButton(true);
-        setShowLogo(false);
         logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
-        // Add delay to ensure state has updated before logging
-        setTimeout(() => {
-          logDebug(`[UI State] Setting showQAButton: true, showLogo: false`);
-          logDebug(`[UI State] Current showQAButton value: ${showQAButton}`);
-          logDebug(`[UI State] Current showLogo value: ${showLogo}`);
-        }, 0);
+        logDebug(`[Script Flow] Transitioning to QA Permission Script`);
       }
     });
 
