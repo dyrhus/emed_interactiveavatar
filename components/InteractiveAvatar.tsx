@@ -123,7 +123,7 @@ export default function InteractiveAvatar({
     avatar.current.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (event) => {
       const timestamp = new Date().toISOString();
       const messageContent = event?.message || event?.detail?.message || '';
-      
+    
       if (!messageContent) {
         return;
       }
@@ -141,7 +141,7 @@ export default function InteractiveAvatar({
         setCurrentScript("Outro Script");
         setShowQAButton(false);
         logDebug(`[${timestamp}] Speaking Outro Script: ${messageContent}`);
-      } else if (messageContent.includes("I can switch to interactive Q&A mode")) {
+      } else if (messageContent.includes(QA_PERMISSION_SCRIPT)) {
         setCurrentScript("QA Permission Script");
         setShowQAButton(true); // Show button when QA script starts
         logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
