@@ -145,6 +145,10 @@ export default function InteractiveAvatar({
         setCurrentScript("QA Permission Script");
         setShowQAButton(true); // Show button when QA script starts
         logDebug(`[${timestamp}] Speaking QA Permission Script: ${messageContent}`);
+        // Force update of button visibility
+        setTimeout(() => {
+          setShowQAButton(true);
+        }, 0);
       }
     });
 
@@ -367,7 +371,7 @@ export default function InteractiveAvatar({
           <Divider />
             <CardFooter className="flex flex-col gap-3 relative border-t">
               <div className="w-full flex justify-center items-center">
-                {showQAButton ? (
+                {showQAButton && (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
                     onClick={activateQA}
@@ -376,7 +380,8 @@ export default function InteractiveAvatar({
                   >
                     Activate Q&A
                   </Button>
-                ) : isVoiceChatActive ? (
+                )}
+                {isVoiceChatActive && (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
                     size="md"
@@ -384,7 +389,8 @@ export default function InteractiveAvatar({
                   >
                     Listening...
                   </Button>
-                ) : (
+                )}
+                {!showQAButton && !isVoiceChatActive && (
                   <Image
                     src="/eMed Logo 200x100.png"
                     alt="eMed Logo"
