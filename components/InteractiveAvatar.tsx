@@ -82,12 +82,15 @@ export default function InteractiveAvatar({
         });
 
         // Add user speaking event listener
-        avatar.current.on(StreamingEvents.USER_START, () => {
-          avatar.current.isUserSpeaking = true;
-        });
-        avatar.current.on(StreamingEvents.USER_STOP, () => {
-          avatar.current.isUserSpeaking = false;
-        });
+        if (avatar.current) {
+          const currentAvatar = avatar.current;
+          currentAvatar.on(StreamingEvents.USER_START, () => {
+            currentAvatar.isUserSpeaking = true;
+          });
+          currentAvatar.on(StreamingEvents.USER_STOP, () => {
+            currentAvatar.isUserSpeaking = false;
+          });
+        }
       }
       setDebug("[Q&A Flow] Voice chat capabilities initialized");
 
