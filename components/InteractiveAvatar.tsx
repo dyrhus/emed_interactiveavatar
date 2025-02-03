@@ -419,7 +419,7 @@ export default function InteractiveAvatar({
                   >
                     Listening...
                   </Button>
-                ) : showQAButton && !currentScript.includes("QA Permission Script") ? (
+                ) : showQAButton ? (
                   <Button
                     className="bg-black text-white hover:bg-gray-900"
                     onClick={activateQA}
